@@ -1,0 +1,56 @@
+version: '3.7'
+services:
+  redis:
+    image: "redis:alpine"
+    container_name: building_blocks_redis
+    ports:
+      - "6379:6379"
+    hostname: redis
+    networks:
+      - building_blocks_network
+  server:
+    container_name: building_blocks_server
+    build:
+      context: ./server
+    ports:
+      - "3001:3001"
+      - "8080:80"
+    environment:
+      NODE_ENV: development
+      NODE_TLS_REJECT_UNAUTHORIZED: 0
+    volumes:
+      - ./server:/server
+    depends_on:
+      - redis
+      - database
+    networks:
+      - building_blocks_network
+  client:
+    container_name: building_blocks_client
+    build:
+      context: ./client
+    hostname: building_blocks_client
+    ports:
+      - "3002:3002"
+    volumes:
+      - ./client:/client
+    stdin_open: true
+    networks:
+      - building_blocks_network
+  database:
+    image: "mongo"
+    container_name: building_blocks_database
+    environment:
+      - MONGO_INITDB_DATABASE=buildingBlocks
+      - MONGO_INITDB_ROOT_USERNAME=kreitech
+      - MONGO_INITDB_ROOT_PASSWORD=kreitech
+    volumes:
+      - ./database/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+      - ./database/mongo-volume:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - building_blocks_network
+
+networks:
+  building_blocks_network:

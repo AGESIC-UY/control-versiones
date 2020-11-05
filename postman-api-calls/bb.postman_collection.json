@@ -1,0 +1,752 @@
+{
+	"info": {
+		"_postman_id": "f7266152-ee74-4eed-8dfe-0b97248a1a75",
+		"name": "BB",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "application",
+			"item": [
+				{
+					"name": "Create application",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "2419b647-ffdc-4891-ab8f-b9add20ba875",
+								"exec": [
+									"var moment = require('moment');",
+									"var today = moment().format(\"YYYY-MM-DD\");",
+									"pm.globals.set(\"today\", today);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Building Blocks mobile\",\n    \"type\": \"5fa4093329c5fe021193275c\",\n    \"version\": \"5fa4092429c5fe021193275b\",\n    \"description\": \"First application to be tested\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/application/create",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"application",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Application",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"app updated\",\n    \"type\": \"5f971fa015c391017bd87449\",\n    \"description\": \"new description\",\n    \"_id\": \"5fa4098b29c5fe021193275e\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/application/update",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"application",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get application",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/application/5fa40aa530dc82024aab7396",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"application",
+								"5fa40aa530dc82024aab7396"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all application",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/application/all/applications",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"application",
+								"all",
+								"applications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove application",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"5fa4098b29c5fe021193275e\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/application/remove",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"application",
+								"remove"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "type",
+			"item": [
+				{
+					"name": "Create type",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"mobile\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/type/create",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"type",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update type",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"5fa408c429c5fe0211932759\",\n    \"name\": \"desktop\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/type/update",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"type",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get type",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/type/5fa408c429c5fe0211932759",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"type",
+								"5fa408c429c5fe0211932759"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all types",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/type/all/types",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"type",
+								"all",
+								"types"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove types",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"5fa408c429c5fe0211932759\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/type/remove",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"type",
+								"remove"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "version",
+			"item": [
+				{
+					"name": "Create version",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"version\": \"1.1\",\n    \"servicesUrls\": [\"https://www.gub.uy/\"],\n    \"minVersion\": \"1.1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/version/create",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"version",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update version",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"_id\": \"5fa40762a424a702040daf01\", \n    \"version\": \"1.2\" , \n    \"servicesUrls\": [\"https://www.gub.uy/agencia-gobierno-electronico-sociedad-informacion-conocimiento/datos-y-estadisticas/estadisticas\"], \n    \"minVersion\": \"1.2\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/version/update",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"version",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "remove version",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"5fa40762a424a702040daf01\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/version/remove/",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"version",
+								"remove",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get version",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/version/5fa40762a424a702040daf01",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"version",
+								"5fa40762a424a702040daf01"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all versions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/version/all/versions",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"version",
+								"all",
+								"versions"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": " other users",
+					"item": [
+						{
+							"name": "create other user - part 2",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{    \n    \"username\": \"Other user\",\n    \"name\": \"Test user\",\n    \"email\": \"test@gmail.com\",\n    \"age\": 30,\n    \"location\": \"Cordon, Montevideo\",\n    \"password\": \"test12345\",\n    \"activation\": \"cccccccccc\",\n    \"role\": \"basic\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/auth/registration/finish",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"auth",
+										"registration",
+										"finish"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create other user - part 1",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"Other user\",\n    \"name\": \"Test user\",\n    \"email\": \"test@gmail.com\",\n    \"age\": 30,\n    \"location\": \"Cordon, Montevideo\",\n    \"password\": \"test12345\",\n    \"activation\": \"cccccccccc\",\n    \"role\": \"basic\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/auth/registration",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"auth",
+										"registration"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "create user - last part",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"Pepe Lew Pew\",\n    \"name\": \"Pepe Le Pew\",\n    \"email\": \"lepew@gmail.com\",\n    \"age\": 27,\n    \"location\": \"Pocitos, Montevideo\",\n    \"password\": \"test12345\",\n    \"activation\": \"cccccccccc\",\n    \"role\": \"superAdmin\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/auth/registration/finish",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"registration",
+								"finish"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create user - first part",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"Pepe Lew Pew\",\n    \"name\": \"Pepe Le Pew\",\n    \"email\": \"lepew@gmail.com\",\n    \"age\": 27,\n    \"location\": \"Pocitos, Montevideo\",\n    \"password\": \"test12345\",\n    \"activation\": \"cccccccccc\",\n    \"role\": \"superAdmin\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/auth/registration",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"registration"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"lepew@gmail.com\",\n    \"password\": \"test12345\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/auth/login/local",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"login",
+								"local"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/auth/logout",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user recovery",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"lepew@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/auth/recovery",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"recovery"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user check",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user\": {\n        \"id\": \"df97fa3fdd6801a6d785f022f384a04fae48709ad34df6da9ca5d28ef6a10502c817d9f124d49970d0f201f4a6d56d576c2fbf32c44dcd6233fbf4a04bd357e2\",\n        \"username\": \"Pepe Lew Pew\",\n        \"name\": \"Pepe Le Pew\",\n        \"email\": \"lepew@gmail.com\",\n        \"location\": \"Pocitos, Montevideo\",\n        \"active\": true\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/auth/check",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"check"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user remove",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"53c82c7937cfc53d65f44f7f95d6c18bf57502f45619d685507535e83259244625c14065f9c3983f80b02316e39ca316d62ba8f500dd81bb9c22a1533bf4cf43\", \n    \"email\": \"test@gmail.com\" \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/user/profileremove",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"user",
+								"profileremove"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user profile update",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"df97fa3fdd6801a6d785f022f384a04fae48709ad34df6da9ca5d28ef6a10502c817d9f124d49970d0f201f4a6d56d576c2fbf32c44dcd6233fbf4a04bd357e2\",\n    \"username\": \"Le pew Updated\",\n    \"name\": \"Pepe Le Pew\",\n    \"email\": \"lepew@gmail.com\",\n    \"age\": 27,\n    \"location\": \"buceo, montevideo\",\n    \"role\": \"basic\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/user/profileupdate",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"user",
+								"profileupdate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/user/df97fa3fdd6801a6d785f022f384a04fae48709ad34df6da9ca5d28ef6a10502c817d9f124d49970d0f201f4a6d56d576c2fbf32c44dcd6233fbf4a04bd357e2",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"user",
+								"df97fa3fdd6801a6d785f022f384a04fae48709ad34df6da9ca5d28ef6a10502c817d9f124d49970d0f201f4a6d56d576c2fbf32c44dcd6233fbf4a04bd357e2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/user/all/users",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"user",
+								"all",
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "68564061-fca4-4666-8354-a50e6df92c3b",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "752726b2-fc61-427e-a85f-7fd8bb14c581",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "11bab3d1-15bb-49a2-9005-5fdd670a8b6d",
+			"key": "BASE_URL",
+			"value": ""
+		}
+	],
+	"protocolProfileBehavior": {}
+}
