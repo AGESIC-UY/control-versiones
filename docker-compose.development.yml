@@ -21,29 +21,29 @@ services:
     volumes:
       - ./server:/server
     depends_on:
-      - redis
       - database
     networks:
       - building_blocks_network
-  client:
-    container_name: building_blocks_client
-    build:
-      context: ./client
-    hostname: building_blocks_client
-    ports:
-      - "3002:3002"
-    volumes:
-      - ./client:/client
-    stdin_open: true
-    networks:
-      - building_blocks_network
+# TODO Client is not used on this sprint
+#  client:
+#    container_name: building_blocks_client
+#    build:
+#      context: ./client
+#    hostname: building_blocks_client
+#    ports:
+#      - "3002:3002"
+#    volumes:
+#      - ./client:/client
+#    stdin_open: true
+#    networks:
+#      - building_blocks_network
   database:
     image: "mongo"
     container_name: building_blocks_database
     environment:
       - MONGO_INITDB_DATABASE=buildingBlocks
-      - MONGO_INITDB_ROOT_USERNAME=kreitech
-      - MONGO_INITDB_ROOT_PASSWORD=kreitech
+      - MONGO_INITDB_ROOT_USERNAME=agesic
+      - MONGO_INITDB_ROOT_PASSWORD=agesic-control-versiones
     volumes:
       - ./database/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
       - ./database/mongo-volume:/data/db

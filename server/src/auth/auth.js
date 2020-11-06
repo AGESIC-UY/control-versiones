@@ -49,6 +49,7 @@ action.login = (req, res, next) => {
     if (!err && user) {
       show.debug('Login success!')
       const data = {
+        _id: user._id,
         id: user.id,
         username: user.username,
         name: user.name,

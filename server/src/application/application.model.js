@@ -27,12 +27,12 @@ const applicationSchema = new Schema({
   type: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Type',
-    required: true
+    required: false
   },
   version: {
     type: Schema.ObjectId,
     ref: 'Version',
-    required: true
+    required: false
   },
   created_at: Date,
   updated_at: Date
