@@ -827,7 +827,7 @@
         }
       }
     },
-    "/application/delete": {
+    "/application/remove": {
       "delete": {
         "tags": [
           "Application"
@@ -1070,7 +1070,7 @@
         }
       }
     },
-    "/type/delete": {
+    "/type/remove": {
       "delete": {
         "tags": [
           "Types"
@@ -1328,7 +1328,7 @@
         }
       }
     },
-    "/version/delete": {
+    "/version/remove": {
       "delete": {
         "tags": [
           "Version"
