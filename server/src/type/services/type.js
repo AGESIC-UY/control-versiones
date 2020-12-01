@@ -11,7 +11,6 @@ const Type = require('../type.model')
  */
 const create = (data, callback) => {
     const { id, name } = data
-
     const TypeData = new Type({
         id, name
     })

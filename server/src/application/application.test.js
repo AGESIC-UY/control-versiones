@@ -37,7 +37,7 @@ describe('Application', () => {
 
   describe('/POST application', () => {
     it('it should create the application', (done) => {
-      const app = {name: 'app no.1',
+      const app = { name: 'app no.1',
         type: newTypeId,
         description: 'this is the app no. 1',
         version: versions,

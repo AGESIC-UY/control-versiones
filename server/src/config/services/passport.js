@@ -23,10 +23,12 @@ const findUser = (email, password, callback) => {
 }
 
 passport.serializeUser((user, done) => {
+  console.log('Inside serializeUser callback. User id is save to the session file store here')
   done(null, user.id)
 })
 
 passport.deserializeUser((id, done) => {
+  console.log('Inside De-serializeUser callback.')
   User.findOne({ id }, (err, user) => {
     if (err) {
       return done(err)

@@ -2,7 +2,10 @@
 'use strict'
 const md5 = require('md5')
 const Application = require('../application.model')
+const User = require('../../user/user.model')
 const Type = require('../../type/type.model')
+const Version = require('../../version/version.model')
+// const { getVersionBasedOnApp } = require('../version/services/version')
 
 /**
  * Create application
@@ -12,26 +15,86 @@ const Type = require('../../type/type.model')
  */
 const create = (data, callback) => {
     const { name, version, type, description } = data
-    const md5Identifier = md5(name + version + type + description)
-    // version should be included within this block of code below
-    Type.findById(type)
-        .then(typeId => {
+    const md5Identifier = md5(name + description + Math.random().toString(36).substring(7))
+    Application.exists({ name: name }, (err, appExists) => {
+        if (appExists) {
+            err = 'Nombre ya ha sido registrado'
+            callback(err)
+        } else {
             const applicationData = new Application({
                 version,
                 identifier: md5Identifier,
                 description,
-                type: typeId,
+                type: type,
                 name
             })
             applicationData.save((err, applicationData) => {
                 if (!err && applicationData) {
                     return callback(null, applicationData)
                 } else {
-                    console.debug(err)
                     return callback(err)
                 }
             })
-        })
+        }
+    })
+}
+
+/**
+ * Create application type and version
+ * @function
+ * @param {object} data
+ * @param {function(*=, *=): (*)} callback
+ */
+const createAll = (data, callback) => {
+    const { name, description, version: { minVersion, servicesUrls, version }, type } = data
+    const md5Identifier = md5(name + Math.random().toString(36).substring(7))
+    let responseMsg = {
+        code: 422,
+        message: 'Ocurrió un error',
+        description: 'Aplicacion: el nombre ya ha sido registrado'
+    }
+    Application.exists({ name: name }, (_err, appExists) => {
+        if (appExists) {
+            callback(responseMsg)
+        } else {
+            const typeData = new Type({
+                name: type
+            })
+            typeData.save((err, doc) => {
+                if (err) {
+                    responseMsg.description = 'Tipo: Nombre es requerido'
+                    return callback(responseMsg, null)
+                }
+                const applicationData = new Application({
+                    identifier: md5Identifier,
+                    description,
+                    type: typeData._id,
+                    name
+                })
+                applicationData.save((err, applicationData) => {
+                    if (err) {
+                        responseMsg.description = 'Aplicacion: No se propocionaron datos requeridos o estos son mas cortos que 5 caracteres o mayores a 100'
+                        return callback(responseMsg, null)
+                    } else {
+                        const versionData = new Version({
+                            owner: applicationData._id,
+                            version: version,
+                            servicesUrls: servicesUrls,
+                            minVersion: minVersion
+                      })
+                      versionData.save((err, versionData) => {
+                        if (!err && versionData) {
+                            return callback(null, versionData)
+                        } else {
+                            responseMsg.description = 'Version: No se propocionaron datos requeridos o estos son mas cortos que 5 caracteres o mayores a 100'
+                            return callback(responseMsg, null)
+                        }
+                    })
+                    }
+                })
+            })
+        }
+    })
 }
 
 /**
@@ -41,48 +104,97 @@ const create = (data, callback) => {
  * @param {callback} callback
  */
 const update = async (data, callback) => {
-    const { _id, name, type, version, description } = data
-
-    Application.findOneAndUpdate(_id,
-        {
-            $set: {
-                description,
-                version,
-                name,
-                type
+    const { _id, type, version, description } = data
+    let typeId = type._id
+        Application.findByIdAndUpdate(_id,
+            {
+                description: description,
+                version: version,
+                type: typeId
+            },
+            {
+                new: true
+            },
+            (err, application) => {
+                if (!err && application) {
+                    return callback(null, application)
+                } else {
+                    return callback(err)
+                }
             }
-        },
-        {
-            new: true
-        },
-        (err, application) => {
-            if (!err && application) {
-                return callback(null, application)
-            } else {
-                return callback(err)
-            }
-        }
-    )
+        )
 }
 
 const get = (id, callback) => {
-    Application.findById(id, (err, application) => {
-        if (!err && application) {
-            return callback(null, application)
-        } else {
+    Application.findOne({ name: id })
+    .populate({ path: 'type' })
+    .populate({ path: 'version' })
+    .exec(function (err, app) {
+        const versionArr = []
+        if (err) {
+            console.log('there is an error', err)
             return callback(err)
+        } else {
+            Version.find({ owner: app._id }, (err, versions) => {
+                if (err) {
+                    console.debug(err)
+                } else {
+                    versionArr.push(versionArr[0])
+                }
+              }).sort({ 'updatedAt': 'desc' })
+
+            return callback(null, app)
+        }
+    })
+}
+
+const getRecentApp = async (app, callback) => {
+    const result = await Version.find({ owner: app._id }).sort({ 'updatedAt': 'desc' })
+    return result[0]
+}
+
+const getApp = async (data, callback) => {
+    const { name, version } = data
+    const responseMsg = {
+        code: 404,
+        message: 'Ocurrio un error',
+        description: 'Aplicacion no encontrada'
+    }
+    Application.findOne({ name: name })
+    .populate({ path: 'type' })
+    .exec(function (err, app) {
+        if (app === null && err === null) {
+            return callback(responseMsg, null)
+        } else {
+            Version.findOne({ owner: app._id, version: version }, async (_err, version) => {
+                if (version !== null) {
+                    app.set('version', version)
+                    return callback(null, app)
+                } else {
+                    let lastVersion = await getRecentApp(app)
+                    app.set('version', lastVersion)
+                    responseMsg.code = 200
+                    responseMsg.message = 'Exito'
+                    responseMsg.description = 'No se encontro la version proporcionada, la version mas reciente encontrada con exito'
+                    responseMsg.application = app
+                    return callback(null, responseMsg)
+                }
+              }).sort({ 'updatedAt': 'desc' })
         }
     })
 }
 
 const getApllications = (callback) => {
-    Application.find({}, (err, application) => {
-        if (!err && application) {
-            return callback(null, application)
-        } else {
+    Application.find({})
+    .populate({ path: 'type' })
+    .populate({ path: 'version' })
+    .exec(function (err, apps) {
+        if (err || apps === null) {
             return callback(err)
+        } else {
+            return callback(null, apps)
         }
-    }).populate('Type', 'Version')
+    })
 }
 
 /**
@@ -103,10 +215,34 @@ const remove = (data, callback) => {
     })
 }
 
+const getRelevant = (data, callback) => {
+    const { id } = data
+
+    User.findById(id)
+    .populate({
+        path: 'apps',
+        model: Application,
+        populate: {
+            path: 'type',
+            model: Type
+        }
+    })
+    .exec(function (err, apps) {
+        if (err || apps === null) {
+            return callback(err)
+        } else {
+            return callback(null, apps)
+        }
+    })
+}
+
 module.exports = {
     applicationCreate: create,
     applicationUpdate: update,
     applicationRemove: remove,
     applicationGetOne: get,
-    applicationGetAll: getApllications
+    applicationGetAll: getApllications,
+    applicationFromMobile: getApp,
+    applicationCreateAll: createAll,
+    applicationGetRelevant: getRelevant
 }

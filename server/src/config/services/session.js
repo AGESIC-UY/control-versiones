@@ -3,37 +3,32 @@
 const config = require('./config')
 const show = require('./logging')
 const session = require('express-session')
-const redis = require('redis')
-const RedisStore = require('connect-redis')(session)
-const RedisClient = redis.createClient(config.redisUrl)
+const MongoDBStore = require('connect-mongodb-session')(session)
 
-const options = {
-  client: RedisClient
-}
-const redisStore = new RedisStore(options)
-
-RedisClient.on('error', (err) => {
-  show.debug('Redis error: ' + err)
+const store = new MongoDBStore({
+  uri: config.mongoUrl,
+  collection: 'sessions'
 })
 
-RedisClient.on('ready', () => {
-  show.debug('Redis connected')
+store.on('ready', () => {
+  show.debug('Session connected')
 })
 
+store.on('error', function (err) {
+  show.debug('Session error: ' + err)
+})
 /**
  * Initialize redis for session cache
  */
 const init = (app) => {
   app.use(session({
-    store: redisStore,
     secret: config.redisSecret,
-    saveUninitialized: true,
-    resave: true,
-    rolling: true,
     cookie: {
-      secure: false, // true if https
-      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
-    }
+      maxAge: new Date(Date.now() + 3600000)
+    },
+    store: store,
+    resave: false,
+    saveUninitialized: false
   }))
 }
 

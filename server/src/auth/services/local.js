@@ -55,7 +55,6 @@ const register = (data, callback) => {
     if (!err && user) {
       return callback(null, user)
     } else {
-      console.debug('err regist', err)
       return callback(err)
     }
   })

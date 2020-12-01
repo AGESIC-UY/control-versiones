@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="25cca414-aa69-4af5-ba09-2db3ed6106f8" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/control-versiones.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1jsWsNzKEeVKXuApum0z4D2ovDY" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RunManager">
+    <configuration name="docker-compose.development.yml: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="sourceFilePath" value="docker-compose.development.yml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Docker.docker-compose.development.yml: Compose Deployment" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="25cca414-aa69-4af5-ba09-2db3ed6106f8" name="Default Changelist" comment="" />
+      <created>1604593485672</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1604593485672</updated>
+      <workItem from="1604593486710" duration="2272000" />
+      <workItem from="1604672740849" duration="44000" />
+      <workItem from="1604678213780" duration="1284000" />
+      <workItem from="1604679751844" duration="758000" />
+      <workItem from="1604689172584" duration="1985000" />
+    </task>
+    <task id="LOCAL-00001" summary="upload first version of building-blocks">
+      <created>1604595246034</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1604595246034</updated>
+    </task>
+    <task id="LOCAL-00002" summary="change credentials on init-mongo">
+      <created>1604595531705</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1604595531705</updated>
+    </task>
+    <task id="LOCAL-00003" summary="add some changes to not use client on docker-compose.">
+      <created>1604679368744</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1604679368745</updated>
+    </task>
+    <task id="LOCAL-00004" summary="change remove endpoints">
+      <created>1604680158873</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1604680158873</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_NEW_TODO" value="false" />
+    <MESSAGE value="upload first version of building-blocks" />
+    <MESSAGE value="change credentials on init-mongo" />
+    <MESSAGE value="add some changes to not use client on docker-compose." />
+    <MESSAGE value="change remove endpoints" />
+    <option name="LAST_COMMIT_MESSAGE" value="change remove endpoints" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="429" y="95" key="CommitChangelistDialog2" timestamp="1604680158677">
+      <screen x="0" y="23" width="1680" height="957" />
+    </state>
+    <state x="429" y="95" key="CommitChangelistDialog2/0.23.1680.957/1680.23.1920.1057@0.23.1680.957" timestamp="1604680158677" />
+    <state x="172" y="107" key="DiffContextDialog" timestamp="1604595486745">
+      <screen x="0" y="23" width="1680" height="957" />
+    </state>
+    <state x="172" y="107" key="DiffContextDialog/0.23.1680.957/1680.23.1920.1057@0.23.1680.957" timestamp="1604595486745" />
+    <state x="541" y="256" width="598" height="490" key="find.popup" timestamp="1604678802196">
+      <screen x="0" y="23" width="1680" height="957" />
+    </state>
+    <state x="541" y="256" width="598" height="490" key="find.popup/0.23.1680.957/1680.23.1920.1057@0.23.1680.957" timestamp="1604678802196" />
+  </component>
+</project>

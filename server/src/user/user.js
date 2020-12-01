@@ -101,18 +101,20 @@ action.UserGetOne = (req, res, next) => {
 action.userGetAll = (req, res, next) => {
   show.debug('Getting all users...')
   userGetAll((err, users) => {
-    if (!err) {
-      show.debug('Got Users successfully!')
+    if (!err && users.length > 0) {
+      show.debug('User getAll got success!')
       return res.json({
-        type: 'userGetAll',
-        success: true,
-        TypeData: users
+        code: 200,
+        message: 'Exito',
+        description: 'Usuarios encontradas con exito',
+        users: users
       })
     } else {
-      show.debug('Getting Users failed!')
+      show.debug('User get all failed!')
       return res.json({
-        type: 'userGetAll',
-        success: false
+        code: 404,
+        message: 'Ocurrio un error',
+        description: 'No se encontraron usuarios'
       })
     }
   })

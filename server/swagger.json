@@ -1,42 +1,42 @@
 {
-    "swagger": "2.0",
-    "info": {
-      "version": "1.0.0",
-      "title": "Building Blocks API",
-      "description": "Application versioning API",
-      "license": {
-        "name": "MIT",
-        "url": "https://opensource.org/licenses/MIT"
-      }
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Building Blocks API",
+    "description": "Application versioning API",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "host": "localhost:3001",
+  "basePath": "/api",
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "API for Auth"
     },
-    "host": "localhost:3001",
-    "basePath": "/api",
-    "tags": [
-      {
-        "name": "Auth",
-        "description": "API for Auth"
-      },
-      {
-        "name": "User",
-        "description": "API for Users"
-      },
-      {
-        "name": "Types",
-        "description": "API for Types"
-      },
-      {
-        "name": "Version",
-        "description": "API for Version"
-      },
-      {
-        "name": "Application",
-        "description": "API for Applications"
-      }
-    ],
-    "schemes": [
-      "http",
-      "https"
-    ],
+    {
+      "name": "User",
+      "description": "API for Users"
+    },
+    {
+      "name": "Types",
+      "description": "API for Types"
+    },
+    {
+      "name": "Version",
+      "description": "API for Version"
+    },
+    {
+      "name": "Application",
+      "description": "API for Applications"
+    }
+  ],
+  "schemes": [
+    "http",
+    "https"
+  ],
   "consumes": [
     "application/json"
   ],
@@ -727,12 +727,78 @@
                 },
                 "description": {
                   "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "string"
+            },
+            "headers": {
+              "X-Rate-Limit": {
+                "type": "integer",
+                "format": "int32",
+                "description": "calls per hour allowed by the user"
+              },
+              "X-Expires-After": {
+                "type": "string",
+                "format": "date-time",
+                "description": "date in UTC when token expires"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid username/password supplied"
+          }
+        }
+      }
+    },
+    "/application/create-all": {
+      "post": {
+        "tags": [
+          "Application"
+        ],
+        "summary": "Create Applications with type and version into the system",
+        "description": "",
+        "operationId": "applicationCreateAll",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Applications object that needs to be added",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
                 },
                 "type": {
                   "type": "string"
                 },
                 "version": {
-                  "type": "string"
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string"
+                    },
+                    "servicesUrls":{
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                  }
+                }
                 }
               }
             }
@@ -943,6 +1009,63 @@
             "description": "successful operation",
             "schema": {
               "type": "string"
+            },
+            "headers": {
+              "X-Rate-Limit": {
+                "type": "integer",
+                "format": "int32",
+                "description": "calls per hour allowed by the user"
+              },
+              "X-Expires-After": {
+                "type": "string",
+                "format": "date-time",
+                "description": "date in UTC when token expires"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid username/password supplied"
+          }
+        }
+      }
+    },
+    "/application/mobile/app": {
+      "get": {
+        "tags": [
+          "Application"
+        ],
+        "summary": "Get application and version",
+        "description": "",
+        "operationId": "applicationMobile",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "name",
+            "description": "Get Application by name",
+            "required": true,
+            "schema": {
+              "name": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "version",
+            "description": "Get Application by version",
+            "required": true,
+            "schema": {
+              "version": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "name": "string",
+              "version": "string"
             },
             "headers": {
               "X-Rate-Limit": {
@@ -1465,68 +1588,86 @@
       }
     }
   },
-    "definitions": {
-      "User": {
-        "type": "object",
-        "properties": {
-          "username": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "password": {
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string"
+        },
+        "updated_at": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "User"
+      }
+    },
+    "Application": {
+      "properties": {
+        "identifier": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string"
+        },
+        "updated_at": {
+          "type": "string"
+        }
+      }
+    },
+    "Type":{
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string"
+        },
+        "updated_at": {
+          "type": "string"
+        }
+      }
+    },
+    "Version": {
+      "properties": {
+        "version": {
+          "type": "string"
+        },
+        "servicesUrls": {
+          "type": "array",
+          "items": {
             "type": "string"
           }
         },
-        "xml": {
-          "name": "User"
-        }
-      },
-      "Application": {
-        "properties": {
-          "identifier": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string"
-          },
-          "version": {
-            "type": "string"
-          }
-        }
-      },
-      "Type":{
-        "properties": {
-          "name": {
-            "type": "string"
-          }
-        }
-      },
-      "Version": {
-        "properties": {
-          "version": {
-            "type": "string"
-          },
-          "servicesUrls": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "minVersion": {
-            "type": "string"
-          }
+        "minVersion": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string"
+        },
+        "updated_at": {
+          "type": "string"
         }
       }
     }
   }
+}

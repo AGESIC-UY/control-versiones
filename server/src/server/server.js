@@ -8,14 +8,12 @@ const {
   db,
   show,
   stats
-  // socket
 } = require('../config')
 const routes = require('../../routes')
 const mongoose = require('mongoose')
-// const http = require('http')
 
 /**
- * Start HTTP/2 server, database, socket.io connection
+ * Start HTTP server, database, socket.io connection
  * Load routes, services, check memory usage
  * @function
  */
@@ -29,8 +27,6 @@ const listen = () => {
   app.listen(config.port, function () {
     show.debug(`Listening at http://${config.host}:${config.port}`)
   })
-  // const server = http.createServer(app).listen(config.port, config.host)
-  // socket.listen(server)
   stats.memory()
 }
 /**

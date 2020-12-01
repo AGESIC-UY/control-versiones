@@ -3,12 +3,13 @@
 const express = require('express')
 const router = express.Router()
 const version = require('../src/version')
-// const protect = require('./protect')
+const protect = require('./protect')
 
-router.get('/:id', version.versionGetOne)
-router.get('/all/versions', version.versionGetAll)
-router.post('/create', version.versionCreate)
-router.post('/update', version.versionUpdate)
-router.delete('/remove', version.versionRemove)
+router.get('/:id', protect, version.versionGetOne)
+router.get('/all/versions', protect, version.versionGetAll)
+router.post('/create', protect, version.versionCreate)
+router.post('/update', protect, version.versionUpdate)
+router.delete('/remove', protect, version.versionRemove)
+router.get('/all/relevant', protect, version.getAllVersionsBasedOnRole)
 
 module.exports = router

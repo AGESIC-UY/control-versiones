@@ -29,13 +29,13 @@ const applicationSchema = new Schema({
     ref: 'Type',
     required: false
   },
-  version: {
-    type: Schema.ObjectId,
+  versions: [{
+    type: mongoose.Schema.Types.ObjectId,
     ref: 'Version',
     required: false
-  },
-  created_at: Date,
-  updated_at: Date
+  }],
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now }
 })
 
 /**

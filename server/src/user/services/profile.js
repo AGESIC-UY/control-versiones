@@ -1,6 +1,7 @@
 'use strict'
 
 const User = require('../user.model')
+const Application = require('../../application/application.model')
 
 /**
  * Update user
@@ -9,15 +10,14 @@ const User = require('../user.model')
  * @param {callback} callback
  */
 const update = (data, callback) => {
-  const { id, username, name, email, age, location, role } = data
+  const { id, username, name, email, age, location } = data
   User.findOneAndUpdate({ id, email, active: true },
     {
       $set: {
         username,
         name,
         age,
-        location,
-        role
+        location
       }
     },
     {
@@ -63,13 +63,16 @@ const get = (data, callback) => {
 
 const getAll = (callback) => {
   console.debug('Getting all users')
-  User.find({}, (err, user) => {
-    if (!err && user) {
-      return callback(null, user)
-    } else {
-      return callback(err)
-    }
-  })
+
+  User.find({})
+    .populate('apps')
+    .exec(function (err, users) {
+      if (err || users === null) {
+        return callback(err)
+      } else {
+        return callback(null, users)
+      }
+    })
 }
 
 module.exports = {

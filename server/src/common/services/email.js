@@ -13,7 +13,7 @@ const send = (settings, callback) => {
     return callback(new Error('Missing parameters!'), false)
   }
   const mailOptions = {
-    from: `Building-Blocks <${config.emailAddress}>`,
+    from: `Building-blocks <${config.emailAddress}>`,
     to: settings.to,
     subject: settings.subject,
     html: settings.content

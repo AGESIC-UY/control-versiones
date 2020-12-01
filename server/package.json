@@ -34,6 +34,7 @@
     "@paypal/checkout-server-sdk": "^1.0.1",
     "body-parser": "^1.17.1",
     "chai-http": "^4.3.0",
+    "connect-mongodb-session": "^2.4.1",
     "connect-redis": "^3.4.0",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.5",

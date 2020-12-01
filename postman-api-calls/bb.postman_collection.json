@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "f7266152-ee74-4eed-8dfe-0b97248a1a75",
+		"_postman_id": "6c34c3a8-f549-4f7e-83ce-d59447e3bc8d",
 		"name": "BB",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -14,7 +14,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "2419b647-ffdc-4891-ab8f-b9add20ba875",
+								"id": "92ed284b-375f-4ec4-b92e-486f6a9d5fc6",
 								"exec": [
 									"var moment = require('moment');",
 									"var today = moment().format(\"YYYY-MM-DD\");",
@@ -29,7 +29,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Building Blocks mobile\",\n    \"type\": \"5fa4093329c5fe021193275c\",\n    \"version\": \"5fa4092429c5fe021193275b\",\n    \"description\": \"First application to be tested\"\n}",
+							"raw": "{\n    \"name\": \"Building Blocks\",\n    \"type\": \"5fad4a322af65900206ad9f6\",\n    \"description\": \"Second application to be tested\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -82,13 +82,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{BASE_URL}}/application/5fa40aa530dc82024aab7396",
+							"raw": "{{BASE_URL}}/application/Building Blocks",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
 								"application",
-								"5fa40aa530dc82024aab7396"
+								"Building Blocks"
 							]
 						}
 					},
@@ -120,7 +120,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id\": \"5fa4098b29c5fe021193275e\"\n}",
+							"raw": "{\n    \"id\": \"5faaddbd4900b20038f63ed8\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -135,6 +135,64 @@
 							"path": [
 								"application",
 								"remove"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get app from mobile",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Building Blocks all\",\n    \"version\": \"0.0\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/application/mobile/app",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"application",
+								"mobile",
+								"app"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create App: type, version and app",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Building Blocks all\",\n    \"description\": \"all created\",\n    \"type\": \"Desktop\",\n    \"version\": {\n        \"version\": \"1.0.0\",\n        \"servicesUrls\": [\"google.com\"],\n        \"minVersion\": \"1.0\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/application/create-all",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"application",
+								"create-all"
 							]
 						}
 					},
@@ -289,7 +347,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"version\": \"1.1\",\n    \"servicesUrls\": [\"https://www.gub.uy/\"],\n    \"minVersion\": \"1.1\"\n}",
+							"raw": "{\n    \"version\": \"9\",\n    \"servicesUrls\": [\"https://www.youtube.uy/\"],\n    \"minVersion\": \"4.0\",\n    \"owner\": \"5fad41acb8f9fe026ff14e68\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -343,7 +401,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id\": \"5fa40762a424a702040daf01\"\n}",
+							"raw": "{\n    \"id\": \"5faad6f82893ff0330f1a491\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -531,7 +589,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"lepew@gmail.com\",\n    \"password\": \"test12345\"\n}",
+							"raw": "{\n    \"email\": \"sbarcelona@kreitech.io\",\n    \"password\": \"qwerty123\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -723,7 +781,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "68564061-fca4-4666-8354-a50e6df92c3b",
+				"id": "4521a1d5-aedf-4fad-869e-028bffc4a068",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -733,7 +791,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "752726b2-fc61-427e-a85f-7fd8bb14c581",
+				"id": "956dbe27-983d-4bee-97dd-ca51f556f944",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -743,7 +801,7 @@
 	],
 	"variable": [
 		{
-			"id": "11bab3d1-15bb-49a2-9005-5fdd670a8b6d",
+			"id": "de21c165-e1b1-480b-82ee-85ec870eee6b",
 			"key": "BASE_URL",
 			"value": ""
 		}

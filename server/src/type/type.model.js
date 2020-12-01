@@ -17,8 +17,8 @@ const typeSchema = new Schema({
     required: true,
     minlength: 5
   },
-  created_at: Date,
-  updated_at: Date
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now }
 })
 
 /**

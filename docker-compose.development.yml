@@ -1,13 +1,5 @@
 version: '3.7'
 services:
-  redis:
-    image: "redis:alpine"
-    container_name: building_blocks_redis
-    ports:
-      - "6379:6379"
-    hostname: redis
-    networks:
-      - building_blocks_network
   server:
     container_name: building_blocks_server
     build:
@@ -24,19 +16,18 @@ services:
       - database
     networks:
       - building_blocks_network
-# TODO Client is not used on this sprint
-#  client:
-#    container_name: building_blocks_client
-#    build:
-#      context: ./client
-#    hostname: building_blocks_client
-#    ports:
-#      - "3002:3002"
-#    volumes:
-#      - ./client:/client
-#    stdin_open: true
-#    networks:
-#      - building_blocks_network
+  client:
+    container_name: building_blocks_client
+    build:
+      context: ./client
+    hostname: building_blocks_client
+    ports:
+      - "3002:3002"
+    volumes:
+      - ./client:/client
+    stdin_open: true
+    networks:
+      - building_blocks_network
   database:
     image: "mongo"
     container_name: building_blocks_database

@@ -10,7 +10,7 @@ const versionSchema = new Schema({
   owner: {
     type: Schema.Types.ObjectId,
     ref: 'Application',
-    required: false
+    required: true
   },
   version: {
     type: String,
@@ -24,8 +24,8 @@ const versionSchema = new Schema({
     type: String,
     required: true
   },
-  created_at: Date,
-  updated_at: Date
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now }
 })
 
 /**

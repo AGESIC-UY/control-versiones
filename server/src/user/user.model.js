@@ -70,17 +70,20 @@ const userSchema = new Schema({
   },
   role: {
     type: String,
-    default: 'basic',
-    enum: ['basic', 'superAdmin', 'admin']
+    default: 'admin',
+    enum: ['superAdmin', 'admin']
   },
   location: {
     type: String,
     minlength: 3,
     maxlength: 100
   },
+  apps: [{
+    type: mongoose.Schema.ObjectId, ref: 'Application'
+  }],
   website: String,
-  created_at: Date,
-  updated_at: Date
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now }
 })
 
 /**

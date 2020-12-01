@@ -77,7 +77,6 @@ const set = (data, callback) => {
   const { password, email } = data
 
   const passwordData = create(password)
-  console.debug('checking pass', passwordData)
   User.findOneAndUpdate({ email },
     {
       $set: {

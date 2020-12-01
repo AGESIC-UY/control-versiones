@@ -108,7 +108,6 @@ action.logout = (req, res, next) => {
 action.registration = (req, res, next) => {
   show.debug('Registrating...')
   const data = req.body
-  console.log('Params regist', data)
   local.register(data, (err, user) => {
     if (!err && user) {
       show.debug('Registration success!')
@@ -207,7 +206,7 @@ action.recovery = (req, res, next) => {
       if (!err && user) {
         mail.send({
           to: user.email,
-          subject: 'N-R-B | Recovery',
+          subject: 'Building Blocks | Recovery',
           content: '<h1>Recovery</h1>Click this link to reset your password: <a href="' + config.url + '/recovery/' + user.recovery + '" target="_new">Reset password</a>'
         }, (err, sent) => {
           if (!err && sent) {
@@ -217,7 +216,7 @@ action.recovery = (req, res, next) => {
               success: true
             })
           } else {
-            show.debug('Recovery failed!')
+            show.debug('Recovery failed! Email not sent')
             return res.json({
               type: 'recovery',
               success: false
@@ -225,7 +224,7 @@ action.recovery = (req, res, next) => {
           }
         })
       } else {
-        show.debug('Recovery failed!')
+        show.debug('Recovery failed! User not found')
         return res.json({
           type: 'recovery',
           success: false

@@ -7,6 +7,7 @@ const errorRoute = require('./error')
 const applicationRoute = require('./application')
 const typeRoute = require('./type')
 const versionRoute = require('./version')
+const userApp = require('./userApp')
 const swaggerUi = require('swagger-ui-express')
 const swaggerDocument = require('../swagger.json')
 
@@ -20,6 +21,7 @@ const init = (app) => {
   app.use('/api/application', applicationRoute)
   app.use('/api/type', typeRoute)
   app.use('/api/version', versionRoute)
+  app.use('/api/userApp', userApp)
   app.use('*', homeRoute)
   app.use('*', errorRoute)
 }
