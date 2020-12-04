@@ -119,7 +119,13 @@ class Version extends Component {
 
   handleRowUpdate = (newData, oldData, resolve) => {
     //validation
-    newData.servicesUrls = newData.servicesUrls.split(',')
+    const dataUpdate = [...this.state.data];
+    const index = oldData.tableData.id;
+
+    if(JSON.stringify(newData.servicesUrls) !== JSON.stringify(dataUpdate[index].servicesUrls)){
+       newData.servicesUrls = newData.servicesUrls.split(',')
+    }
+
       api.post("/version/update", newData)
       .then(res => {
         const { code, description, message,  version } = res.data
@@ -191,6 +197,7 @@ class Version extends Component {
                 editable={{
                   onRowUpdate: (newData, oldData) =>
                     new Promise((resolve) => {
+                      // newData.servicesUrls = newData.servicesUrls.split(',')
                         this.handleRowUpdate(newData, oldData, resolve);
                         
                     }),

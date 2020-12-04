@@ -51,7 +51,6 @@ const create = (data, callback) => {
  */
 const update = async (data, callback) => {
     const { _id, version, servicesUrls, minVersion, owner } = data
-
     Version.findOneAndUpdate(_id,
         {
             $set: {

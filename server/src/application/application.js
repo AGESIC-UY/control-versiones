@@ -174,7 +174,7 @@ action.applicationGetOne = (req, res, next) => {
  */
 action.applicationFromMobile = (req, res, next) => {
   show.debug('Get app from mobile...')
-  const data = req.body
+  const data = req.query
   applicationFromMobile(data, (err, app) => {
     if (!err && app !== null) {
       show.debug('Apps got success!')
