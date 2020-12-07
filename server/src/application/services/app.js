@@ -148,11 +148,6 @@ const get = (id, callback) => {
     })
 }
 
-const getRecentApp = async (app, callback) => {
-    const result = await Version.find({ owner: app._id }).sort({ 'updatedAt': 'desc' })
-    return result[0]
-}
-
 const getApp = async (data, callback) => {
     const { name, version } = data
     const responseMsg = {
@@ -160,26 +155,54 @@ const getApp = async (data, callback) => {
         message: 'Ocurrio un error',
         description: 'Aplicacion no encontrada'
     }
+    let versionValue = version
+    console.debug('APPPP-', data)
     Application.findOne({ name: name })
-    .populate({ path: 'type' })
-    .exec(function (err, app) {
-        if (app === null && err === null) {
+    .populate({ path: 'type' }).lean()
+    .exec(function (_err, app) {
+        console.debug('APPPP-', name)
+        if (app === null) {
             return callback(responseMsg, null)
         } else {
-            Version.findOne({ owner: app._id, version: version }, async (_err, version) => {
-                if (version !== null) {
-                    app.set('version', version)
-                    return callback(null, app)
+            Version.findOne({ owner: app._id, version: version }, async (err, version) => {
+                if (version !== null && err === null) {
+                    if (versionValue < version.minVersion) {
+                        app['version'] = version
+                        delete app.versions
+                        console.debug('---->', app)
+                        responseMsg.code = 200
+                        responseMsg.message = 'Actualizar'
+                        responseMsg.description = 'Tu version esta desactualizada'
+                        responseMsg['app'] = app
+                        return callback(null, responseMsg)
+                    } else {
+                        app['version'] = version
+                        delete app.versions
+                        responseMsg.code = 200
+                        responseMsg.message = 'Exito'
+                        responseMsg.description = 'Version encontrada'
+                        responseMsg['app'] = app
+                        return callback(null, responseMsg)
+                    }
                 } else {
-                    let lastVersion = await getRecentApp(app)
-                    app.set('version', lastVersion)
-                    responseMsg.code = 200
-                    responseMsg.message = 'Exito'
-                    responseMsg.description = 'No se encontro la version proporcionada, la version mas reciente encontrada con exito'
-                    responseMsg.application = app
-                    return callback(null, responseMsg)
+                    Version.findOne({ owner: app._id }).sort({ 'updatedAt': 'desc' }).limit(1).exec(function (_err, version) {
+                        if (version === null) {
+                            responseMsg.code = 404
+                            responseMsg.message = 'Ocurrio un error'
+                            responseMsg.description = 'No se encontro ninguna version registrada'
+                            return callback(responseMsg, null)
+                        } else {
+                            app['version'] = version
+                            delete app.versions
+                            responseMsg.code = 200
+                            responseMsg.message = 'Exito'
+                            responseMsg.description = 'No se encontro version, se proporciona los datos de la última version registrada'
+                            responseMsg['app'] = app
+                            return callback(responseMsg, null)
+                        }
+                    })
                 }
-              }).sort({ 'updatedAt': 'desc' })
+              })
         }
     })
 }

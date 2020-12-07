@@ -172,8 +172,25 @@ class Application extends Component {
         resolve()
       })
   }
-
+  editFunctions = {
+    onRowUpdate: (newData, oldData) =>
+      new Promise((resolve) => {
+        this.handleRowUpdate(newData, oldData, resolve);
+      }),
+    onRowAdd: (newData) =>
+      new Promise((resolve) => {
+        this.handleRowAdd(newData, resolve)
+      }),
+    onRowDelete: (oldData) =>
+      new Promise((resolve) => {
+        this.handleRowDelete(oldData, resolve)
+      }),
+  }
   render = () => {
+    if (this.props.user.role !== 'superAdmin') {
+      delete this.editFunctions.onRowAdd
+    }
+    
   return (
    <div className={styles.App}>
     <Grid container spacing={1}>
@@ -183,20 +200,7 @@ class Application extends Component {
             title="Aplicaciones"
             data={this.state.data}
             icons={tableIcons}
-            editable={{
-              onRowUpdate: (newData, oldData) =>
-                new Promise((resolve) => {
-                  this.handleRowUpdate(newData, oldData, resolve);
-                }),
-              onRowAdd: (newData) =>
-                new Promise((resolve) => {
-                  this.handleRowAdd(newData, resolve)
-                }),
-              onRowDelete: (oldData) =>
-                new Promise((resolve) => {
-                  this.handleRowDelete(oldData, resolve)
-                }),
-            }}
+            editable={this.editFunctions}
             columns = {[
               {title: "id", field: "id", hidden: true},
               {title: "Nombre", field: "name"},
