@@ -1,5 +1,4 @@
 'use strict'
-
 const fs = require('fs')
 const path = require('path')
 const crypto = require('crypto')
@@ -9,12 +8,15 @@ if (env === 'production') {
   basePath = './'
 }
 const envPath = path.join(basePath, `.env/${env}.config.env`)
-const envConfig = require('dotenv').config({
-  path: envPath
-})
-if (envConfig.error) {
-  throw envConfig.error
+if (envPath) {
+  const envConfig = require('dotenv').config({
+    path: envPath
+  })
+  if (envConfig.error) {
+    throw envConfig.error
+  }
 }
+
 const redisSecret = crypto.randomBytes(48).toString('hex')
 
 /**
