@@ -8,7 +8,7 @@ if (env === 'production') {
   basePath = './'
 }
 const envPath = path.join(basePath, `.env/${env}.config.env`)
-if (envPath) {
+if (fs.existsSync(envPath)) {
   const envConfig = require('dotenv').config({
     path: envPath
   })
