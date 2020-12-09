@@ -46,6 +46,7 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.url = `http://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}`
+    console.log("backendUrl", this.url)
     this.props.setNotifications(this.notification)
     this.props.setUrl(this.url)
     axios.defaults.withCredentials = true
