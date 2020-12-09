@@ -30,7 +30,7 @@ import Button from "@material-ui/core/Button";
 
 
 const api = axios.create({
-    baseURL: `http://localhost:3001/api/`,
+    baseURL: `http://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/`,
     withCredentials: true
 })
 
@@ -176,7 +176,7 @@ class PermissionToUserApp extends Component {
           fields.forEach((f) => {
             thisRow[f] = CellParams.getValue(f);
           });
-
+          // eslint-disable-next-line
           let selectedApps = this.state.data.filter(app => { if(CellParams.data.appsId.includes(app._id)) return app })
 
           this.setState({ selectedApps: selectedApps, dialogData: thisRow, dialogOpen: true})

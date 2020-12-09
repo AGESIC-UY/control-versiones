@@ -1,0 +1,46 @@
+try {
+    timeout(time: 30, unit: 'MINUTES') {
+    def appName=env.NAME
+    def appNamefrontend = env.NAMEfrontend
+    def project=""   
+    def verbose="false"
+    def routeHost = ""
+
+    node {
+        project = env.PROJECT_NAME
+        stage("Initialize") {
+        
+        sh "oc get route ${appName} -n ${project} -o jsonpath='{ .spec.host }' --loglevel=4 > routehost"
+        routeHost = readFile('routehost').trim()
+        sh "oc get route ${appNamefrontend} -n ${project} -o jsonpath='{ .spec.host }' --loglevel=4 > routehost"
+        routeHost = readFile('routehost').trim()
+        }
+
+        openshift.withCluster() {
+        openshift.withProject() {
+            stage("Build Back") {
+              echo "building  ${appName}"
+              def bld = openshift.startBuild("${appName}")
+              bld.untilEach {
+                  return it.object().status.phase == "Running"
+              }
+              bld.logs('-f') 
+            }
+            stage("Build Front") {              
+              echo "building  ${appNamefrontend}"
+              def bldf = openshift.startBuild("${appNamefrontend}")
+              bldf.untilEach {
+                  return it.object().status.phase == "Running"
+              }
+              bldf.logs('-f') 
+            }                   
+        }
+        }
+    }
+    }
+} catch (err) {
+    echo "in catch block"
+    echo "Caught: ${err}"
+    currentBuild.result = 'FAILURE'
+    throw err
+}  
