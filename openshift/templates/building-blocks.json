@@ -386,6 +386,10 @@
                     }
                   },
                   {
+                    "name": "DB_HOST",
+                    "value": "${DB_HOST}"
+                  },
+                  {
                     "name": "DB_NAME",
                     "value": "${DATABASE_NAME}"
                   },
@@ -549,7 +553,7 @@
                   },
                   {
                     "name": "REACT_APP_PORT",
-                    "value": "'80'"
+                    "value": "80"
                   }
                 ],
                 "readinessProbe": {
@@ -885,6 +889,12 @@
       "displayName": "Database Name",
       "required": true,
       "value": "buildingBlocks"
+    },
+    {
+      "name": "DB_HOST",
+      "displayName": "Database Host",
+      "required": true,
+      "value": ""
     },
     {
       "name": "DATABASE_ADMIN_PASSWORD",
