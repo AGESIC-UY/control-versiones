@@ -11,7 +11,7 @@
     "test": "mocha --exit --reporter spec --timeout 15000  \"src/*/*.test.js\"",
     "build": "webpack --config webpack.config.js",
     "postinstall": "npm run build",
-    "start": "nodemon app.js -L --exec \"node\"",
+    "start": "node app.js",
     "start-prod": "pm2-runtime start app.js -i max",
     "stop": "pm2 stop all",
     "delete": "pm2 delete app"
