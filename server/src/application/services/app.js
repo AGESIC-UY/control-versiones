@@ -156,11 +156,9 @@ const getApp = async (data, callback) => {
         description: 'Aplicacion no encontrada'
     }
     let versionValue = version
-    console.debug('APPPP-', data)
     Application.findOne({ name: name })
     .populate({ path: 'type' }).lean()
     .exec(function (_err, app) {
-        console.debug('APPPP-', name)
         if (app === null) {
             return callback(responseMsg, null)
         } else {
@@ -169,7 +167,6 @@ const getApp = async (data, callback) => {
                     if (versionValue < version.minVersion) {
                         app['version'] = version
                         delete app.versions
-                        console.debug('---->', app)
                         responseMsg.code = 200
                         responseMsg.message = 'Actualizar'
                         responseMsg.description = 'Tu version esta desactualizada'

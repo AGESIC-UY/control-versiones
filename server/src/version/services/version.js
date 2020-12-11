@@ -13,34 +13,76 @@ const mongoose = require('mongoose')
  */
 const create = (data, callback) => {
     const { owner, version, servicesUrls, minVersion } = data
-
-    // eslint-disable-next-line no-unused-vars
-    const VersionData = new Version({
-        owner, version, servicesUrls, minVersion
-    }).save((err, version) => {
-        if (!err && version) {
-            Application.findOneAndUpdate({ _id: owner },
-                {
-                    $push: {
-                        versions: version._id
-                    }
-                },
-                {
-                    new: true
-                }
-            ).exec(function (err, app) {
-                if (!err && app) {
-                    console.debug('saved app', app)
+    Application.findById(owner)
+        .populate('versions')
+        .exec(function (err, app) {
+            if (!err && app) {
+                if (app.versions.length > 0) {
+                     if (app.versions.some(ver => ver.version === version)) {
+                        err = {
+                            code: 404,
+                            message: 'Ocurrio un error',
+                            description: 'Esta version ya existe'
+                        }
+                        return callback(err)
+                     } else {
+                        new Version({
+                            owner, version, servicesUrls, minVersion
+                        }).save((err, version) => {
+                            if (!err && version) {
+                                Application.findOneAndUpdate({ _id: owner },
+                                    {
+                                        $push: {
+                                            versions: version._id
+                                        }
+                                    },
+                                    {
+                                        new: true
+                                    }
+                                ).exec(function (err, app) {
+                                    if (!err && app) {
+                                        console.debug('saved app', app)
+                                    } else {
+                                        console.log('err saving app', err)
+                                    }
+                                })
+                                return callback(null, version)
+                            } else {
+                                return callback(err)
+                            }
+                        })
+                     }
                 } else {
-                    console.log('err saving app', err)
+                    new Version({
+                        owner, version, servicesUrls, minVersion
+                    }).save((err, version) => {
+                        if (!err && version) {
+                            Application.findOneAndUpdate({ _id: owner },
+                                {
+                                    $push: {
+                                        versions: version._id
+                                    }
+                                },
+                                {
+                                    new: true
+                                }
+                            ).exec(function (err, app) {
+                                if (!err && app) {
+                                    console.debug('saved app', app)
+                                } else {
+                                    console.log('err saving app', err)
+                                }
+                            })
+                            return callback(null, version)
+                        } else {
+                            return callback(err)
+                        }
+                    })
                 }
-            })
-            return callback(null, version)
-        } else {
-            console.log('err', err)
-            return callback(err)
-        }
-    })
+            } else {
+                return callback(err)
+            }
+        })
 }
 
 /**
@@ -138,20 +180,21 @@ const remove = (data, callback) => {
                 { new: true },
         (err, userApp) => {
             if (!err && userApp) {
-                return callback(null, userApp)
+                Version.deleteOne(query, (err) => {
+                    if (!err) {
+                        return callback(null)
+                    } else {
+                        return callback(err)
+                    }
+                })
+                // return callback(null, userApp)
             } else {
                 return callback(err)
             }
         }
         )
 
-    Version.deleteOne(query, (err) => {
-        if (!err) {
-            return callback(null)
-        } else {
-            return callback(err)
-        }
-    })
+
 }
 
 module.exports = {

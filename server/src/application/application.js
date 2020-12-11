@@ -59,7 +59,6 @@ action.applicationCreateAll = (req, res, next) => {
   const data = req.body
   show.debug('Add application...')
   applicationCreateAll(data, (err, application) => {
-    console.debug('Errr ->>>', err)
     if (!err && application) {
       show.debug('Application created!')
       return res.json({

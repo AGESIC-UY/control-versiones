@@ -28,12 +28,17 @@ action.versionCreate = (req, res, next) => {
         createdAt: version.createdAt
       })
     } else {
-      show.debug('Version create failed!', err.errors)
-      return res.json({
-        code: 422,
-        message: 'Ocurrió un error',
-        description: 'Aplicacion, version, url de servicios y version minima son requeridos'
-      })
+      show.debug('Version create failed!', err)
+      if (err.code === 404) {
+        return res.json(err)
+      } else {
+        return res.json({
+          code: 422,
+          message: 'Ocurrió un error',
+          description: 'Aplicacion, version, url de servicios y version minima son requeridos'
+        })
+      }
+    
     }
   })
 }
@@ -79,7 +84,6 @@ action.versionRemove = (req, res, next) => {
   const data = req.body
   show.debug('Removing Version...')
   versionRemove(data, (err) => {
-    console.debug('removing', err)
     if (!err) {
       show.debug('Version remove success!')
       return res.json({
@@ -155,9 +159,7 @@ action.versionGetAll = (req, res, next) => {
 action.getAllVersionsBasedOnRole = (req, res, next) => {
   show.debug('Get all Versions based on role...')
   const data = req.query
-  console.debug('Query -->', data)
   getAllVersionsBasedOnRole(data, (err, versions) => {
-    console.debug('debug', versions)
     if (!err && versions !== null) {
       show.debug('Version got success!')
       return res.json({

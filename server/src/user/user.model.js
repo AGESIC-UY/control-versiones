@@ -51,10 +51,6 @@ const userSchema = new Schema({
     type: Boolean,
     default: false
   },
-  admin: {
-    type: Boolean,
-    default: false
-  },
   activation: {
     type: String,
     default: ''
