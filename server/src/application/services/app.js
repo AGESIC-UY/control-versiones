@@ -15,7 +15,9 @@ const Version = require('../../version/version.model')
  */
 const create = (data, callback) => {
     const { name, version, type, description } = data
-    const md5Identifier = md5(name + description + Math.random().toString(36).substring(7))
+    const md5Identifier = md5(name + Date.now())
+    const md5ClientKey = Buffer.from(md5Identifier).toString('base64')
+
     Application.exists({ name: name }, (err, appExists) => {
         if (appExists) {
             err = 'Nombre ya ha sido registrado'
@@ -24,6 +26,7 @@ const create = (data, callback) => {
             const applicationData = new Application({
                 version,
                 identifier: md5Identifier,
+                clientKey: md5ClientKey,
                 description,
                 type: type,
                 name
@@ -149,7 +152,7 @@ const get = (id, callback) => {
 }
 
 const getApp = async (data, callback) => {
-    const { name, version } = data
+    const { name, version, clientKey } = data
     const responseMsg = {
         code: 404,
         message: 'Ocurrio un error',
@@ -162,19 +165,23 @@ const getApp = async (data, callback) => {
         if (app === null) {
             return callback(responseMsg, null)
         } else {
+            if (clientKey !== app.clientKey) {
+                responseMsg.description = 'Client key invalido'
+             return callback(responseMsg, null)
+            }
             Version.findOne({ owner: app._id, version: version }, async (err, version) => {
                 if (version !== null && err === null) {
                     if (versionValue < version.minVersion) {
-                        app['version'] = version
                         delete app.versions
+                        app['versions'] = version
                         responseMsg.code = 200
                         responseMsg.message = 'Actualizar'
                         responseMsg.description = 'Tu version esta desactualizada'
                         responseMsg['app'] = app
                         return callback(null, responseMsg)
                     } else {
-                        app['version'] = version
                         delete app.versions
+                        app['versions'] = version
                         responseMsg.code = 200
                         responseMsg.message = 'Exito'
                         responseMsg.description = 'Version encontrada'
@@ -187,10 +194,12 @@ const getApp = async (data, callback) => {
                             responseMsg.code = 404
                             responseMsg.message = 'Ocurrio un error'
                             responseMsg.description = 'No se encontro ninguna version registrada'
+                            responseMsg['app'] = app
                             return callback(responseMsg, null)
                         } else {
-                            app['version'] = version
+                            console.debug('real ELSE', version)
                             delete app.versions
+                            app['versions'] = version
                             responseMsg.code = 200
                             responseMsg.message = 'Exito'
                             responseMsg.description = 'No se encontro version, se proporciona los datos de la última version registrada'

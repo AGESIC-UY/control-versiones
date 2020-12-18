@@ -2,15 +2,13 @@
 # Documentacion
 Requerimientos: 
 - node 
-- Android Studio instalado Link de descarga 
+- Android Studio instalado
 - Java jdk instalado si aun no lo tiene y usa mac brew cask install adoptopenjdk/openjdk/adoptopenjdk8 es necesario tener Java jdk 8 y guardar lo siguiente en su perfil del shell JAVA_HOME="/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home" 
 - React native: si aun no lo tiene ejecute: sudo npm install -g react-native-cli 
 - Xcode para la app ios
 
+
 ### Nota importante
-Ejecutar ```npm i```
-
-
 - Despues de haber instalado Java JDK asegurarse de agregar lo siguiente al shell eg: bash, zshrc, etc.
 ```
 export ANDROID_HOME=/Users/{TuUsuario}/Library/Android/sdk
@@ -25,7 +23,7 @@ export PATH=$ANDROID_HOME/tools:$PATH
 4. En ``` SDK Platforms ``` da click en el checkbox de ```Show Package Details ``` selecciona las opciones de : ```Android SDK Platforms 29```, ```Sources for Android 29``` y ```Intel x86 Atom_64 System Image```
 5. En la parte inferior derecha da click en el checkbox de ```Show Package Details``` y asegurate que la version ``` 29.0.2 ``` este seleccionada dentro de ``` Android SDK Tools ```
 6. Finalmente Selecciona ```apply``` y acepta los acuerdos de licencia.
-
+7. Ejecutar npm i en la carpeta raiz
 
 ```
 Si se ejecuta con emulador:
@@ -47,9 +45,6 @@ const serviceURL = 'http://192.168.1.44:3001/api/';
 
 
 
-
-
-
 # Integracion con Building blocks
 
 Endpoint
@@ -66,10 +61,14 @@ Al ejecutarse el componente principal : App.js se ejecuta el siguiente flujo:
 Consulta sobre los datos de una version de la aplicacion
 
 #### Que enviar - parametros que recibe
-Para que el backend entienda la peticion, es necesario enviar los siguientes datos en formato JSON:
+Para que el backend entienda la peticion, es necesario enviar los siguientes datos en formato JSON: 
 
 - Name: corresponde al nombre de la app
 - Version: corresponde a la version actual de la app
+- clientKey: corresponde a el hash generado para la aplicacion
+
+###### Nota importante
+El client key es necesario ya que actua como forma de autenticacion para cada aplicacion, es decir, se busca la aplicacion por nombre y esta puede ser encontrada, mas sin embargo si el clientKey adjuntado no corresponde a la aplicacion registrada en la base de datos, esta devolvera el mensaje correspondiente y no permitira la obtencion de los datos de la aplicacion ya que esto no vendran en la respuesta.
 
 para obtener la version o build number correspondiente de la applicacion se utiliza:
 
@@ -86,6 +85,7 @@ Un ejemplo:
 {
     "name": "Building Blocks",
     "version": "1.0.0"
+    "clientKey": "MTFkYzUwMTQ5NTU1NWZlYjQ5MGY0YjgzMTAyZmEyMTY="
 }
 ```
 
@@ -94,14 +94,35 @@ Existen dos variantes principales en la respuesta del servidor:
 1. Una respuesta exitosa con los datos correspondientes
 2. Una respuesta con error
 
-Un ejemplo del primer caso:
+Un ejemplo del primer caso con un variante donde se avisa que debe actualizar:
+
 ```
 {
-  "code":200,
-  "description":"Version encontrada",
-  "app":{"_id":"5fca9a4ee33e390020edd415","identifier":"7ff1226196359c7c1be8d83e20d21735","description":"kldkeldklekdlekdlke","type":{"_id":"5fce7584cfb3820020f1370b","name":"Desktop","createdAt":"2020-12-07T18:33:40.523Z","updatedAt":"2020-12-07T18:33:40.523Z","__v":0},"name":"Building blocks","createdAt":"2020-12-04T20:21:34.849Z","updatedAt":"2020-12-04T20:21:34.849Z","__v":0,
-  "version":{"servicesUrls":["www.google.com"],"_id":"5fca9d2e370dff00eced8d55","owner":"5fca9a4ee33e390020edd415","version":"2.2.2","minVersion":"2.2.2","createdAt":"2020-12-04T20:33:50.728Z","updatedAt":"2020-12-04T20:33:50.728Z","__v":0}}
+code: 200
+description: "Tu version esta desactualizada"
+message: "Actualizar"
+"app": {
+  _id: "5fdbbc3593f377002185ddb7", identifier: "05f8e5e78b37170e7d409b4dbfb9df4e", 
+  clientKey: "MDVmOGU1ZTc4YjM3MTcwZTdkNDA5YjRkYmZiOWRmNGU="
+  createdAt: "2020-12-17T20:14:45.070Z"
+  description: "Test app"
+  identifier: "05f8e5e78b37170e7d409b4dbfb9df4e"
+  name: "Building blocks"
+  type: {
+      _id: "5fd39730562eec002b4dd221", name: "Mobile", createdAt: "2020-12-11T15:58:40.116Z", 
+      updatedAt: "2020-12-11T15:58:40.116Z", __v: 0
   }
+  updatedAt: "2020-12-17T20:14:45.070Z"
+  versions: {
+      createdAt: "2020-12-11T17:06:57.393Z"
+      minVersion: "1.3.3"
+      owner: "5fdbbc3593f377002185ddb7"
+      servicesUrls: (6) ["google.com", "aaa.net", "eeee.com", "eeeeeeekkk.com", "lojkji.net", "aasdewddw.com"]
+      updatedAt: "2020-12-11T17:06:57.393Z"
+      version: "1.2.3"
+      _id: "5fd3a731c14849001f9cdc18"
+ }
+}
 ```
 
 Un  ejemplo del segundo caso:
@@ -114,6 +135,18 @@ Un  ejemplo del segundo caso:
 }
 ```
 
+En caso de proporcionar un clientKey equivocado:
+```
+  code: 404
+  description: "Client key invalido"
+  message: "Ocurrio un error"
+```
+
+##### Para la proxima version
+El client key se podria actualizar desde la aplicacion web con un input  el cual el valor lo determina el usuario con el fin de solventar la situacion en la que esta key se filtre. El string proporcionado se reducira con el siguiente proceso el cual ya se encuentra implementado en este momento:
+
+String --> md5 --> base64
+
 
 #### Recomendacion
 Hay un caso en el que la version proporcionada se encuentra desactualizada respecto a la registrada en la base de datos, por lo tanto, se le avisa al usuario que debe actualizar.
@@ -122,6 +155,17 @@ Si esto ocurre la app alertara con un mensaje:
 ```Tu version esta desactualizada -  Actualizar```
 
 Donde actualizar es un boton que redirige a la store para actualizar.
+
+
+### Tolerancia a fallos
+Para solventar los casos en los que las llamadas a la api no sean exitosas por problemas de network o cualquiera que imposibilite esa llamada, se implemento un local storage que permite persistir llamadas anteriores exitosas, el flujo es el siguiente:
+
+El mejor escenario
+
+Api call --> respuesta exitosa(devuelve app y versiones) --> se persisten estos datos --> se muestran los datos
+
+El pero escenario
+api call --> respuesta fallida(network error) ---> consulta el storage y trae los datos persistidos de anteriores llamadas exitosas --> se muestran los datos
 
 
 #### Crear builds
@@ -182,18 +226,6 @@ Ejecuta el siguiente comando desde la terminal
 ```
 xed ./ios
 ```
-
-Ejecutar los siguientes comandos
-```
- pod install
-```
-
-y
-
-```
- react-native link
-```
-
 Despues
 ```
   react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios

@@ -31,27 +31,34 @@ class VersionDisplay extends React.Component {
     minVersion: null,
     urls: [],
     error: false,
+    networkError: false
   };
   componentDidMount() {
     this.refreshAppVersion();
   }
   refreshAppVersion = async () => {
-    let {code, description, message, app} = await getAPIVersion();
+    let {code, description, message, appName,
+      verNum, minVersion, urls, networkError } = await getAPIVersion();
 
-    if (app && description.includes('Version encontrada')) {
+    if (appName && description.includes('Version encontrada') || 
+      appName && description.includes('Version encontrada') && networkError) {
+      if (networkError) {
+        Alert.alert('Ocurrio un error', 
+          'No se puede comunicar con la api, se muestra la ultima version exitosa');
+      }
       this.setState({
-        appName: app.name,
-        verNum: app.version.version,
-        minVersion: app.version.minVersion,
-        urls: app.version.servicesUrls,
+        appName: appName,
+        verNum: verNum,
+        minVersion: minVersion,
+        urls: urls,
       });
-    } else if (app && message === 'Actualizar') {
+    } else if (appName && message === 'Actualizar') {
       // en este caso se tiene que forzar a actualizar la aplicacion haciendo un redirect a las tiendas
       this.setState({
-        appName: app.name,
-        verNum: app.version.version,
-        minVersion: app.version.minVersion,
-        urls: app.version.servicesUrls,
+        appName: appName,
+        verNum: verNum,
+        minVersion: minVersion,
+        urls: urls,
       });
       Alert.alert(
         message,
@@ -68,33 +75,45 @@ class VersionDisplay extends React.Component {
         ],
         {cancelable: false},
       );
-    } else if (description.includes('No se encontro')) {
+    } else if (
+      appName &&
+      description.includes('No se encontro') &&
+      message.includes('Exito')
+    ) {
       this.setState({
-        appName: app.name,
-        verNum: app.version.version,
-        minVersion: app.version.minVersion,
-        urls: app.version.servicesUrls,
+        appName: appName,
+        verNum: verNum,
+        minVersion: minVersion,
+        urls: urls,
       });
       Alert.alert(message, description);
     } else {
-      this.setState({error: true});
+      appName
+        ? this.setState({appName: appName, error: true})
+        : this.setState({error: true});
       Alert.alert(message, description);
     }
   };
   render() {
     let {appName, verNum, minVersion, urls, error} = this.state;
-    let AppData = error ? (
-      <View style={Body.container}>
-        {rowComponent('Ocurrio un error', 'Aplicacion no encontrada')}
-      </View>
-    ) : (
-      <View style={Body.container}>
-        {rowComponent('Aplicación', appName)}
-        {rowComponent('Versión', verNum)}
-        {rowComponent('Versión Mínima', minVersion)}
-        {multipleRowsComponent('URLs', urls)}
-      </View>
-    );
+    let AppData =
+      error && !appName ? (
+        <View style={Body.container}>
+          {rowComponent('Ocurrio un error', 'Aplicacion no encontrada')}
+        </View>
+      ) : error && appName ? (
+        <View style={Body.container}>
+          {rowComponent('Aplicación', appName)}
+          {rowComponent('Ocurrio un error', 'Versiones no encontradas')}
+        </View>
+      ) : (
+        <View style={Body.container}>
+          {rowComponent('Aplicación', appName)}
+          {rowComponent('Versión', verNum)}
+          {rowComponent('Versión Mínima', minVersion)}
+          {multipleRowsComponent('URLs', urls)}
+        </View>
+      );
     return <>{AppData}</>;
   }
 }

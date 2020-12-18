@@ -13,6 +13,12 @@ const applicationSchema = new Schema({
     unique: true,
     minlength: 5
   },
+  clientKey: {
+    type: String,
+    required: true,
+    unique: true,
+    minlength: 5
+  },
   name: {
     type: String,
     required: true,

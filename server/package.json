@@ -8,9 +8,8 @@
     "lint": "./node_modules/.bin/eslint ./routes ./src ./app.js",
     "lint:fix": "./node_modules/.bin/eslint *.js ./src/ --fix",
     "dev": "nodemon app.js -L --exec \"node\"",
-    "test": "mocha --exit --reporter spec --timeout 15000  \"src/*/*.test.js\"",
+    "test": "./node_modules/mocha/bin/mocha src/*/*.test.js --reporter spec",
     "build": "webpack --config webpack.config.js",
-    "start": "pm2-runtime start app.js -i max",
     "stop": "pm2 stop all",
     "delete": "pm2 delete app"
   },
