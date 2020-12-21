@@ -14,7 +14,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "92ed284b-375f-4ec4-b92e-486f6a9d5fc6",
 								"exec": [
 									"var moment = require('moment');",
 									"var today = moment().format(\"YYYY-MM-DD\");",
@@ -29,7 +28,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Building Blocks\",\n    \"type\": \"5fad4a322af65900206ad9f6\",\n    \"description\": \"Second application to be tested\"\n}",
+							"raw": "{\n    \"name\": \"Building Blocks\",\n    \"type\": \"5fad7283ead39d001f473c8e\",\n    \"description\": \"Second application to be tested\",\n    \"users\": \n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -150,7 +149,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Building Blocks all\",\n    \"version\": \"0.0\"\n}",
+							"raw": "{\n    \"name\": \"Testing app\",\n    \"version\": \"1.0.0\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -197,9 +196,57 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "get app by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/application/id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"application",
+								"id"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get relevant apps",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"5fbd620e158626003953e631\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/application/all/relevant",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"application",
+								"all",
+								"relevant"
+							]
+						}
+					},
+					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "type",
@@ -211,7 +258,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"mobile\"\n}",
+							"raw": "{\n    \"name\": \"Mobile\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -334,8 +381,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "version",
@@ -347,7 +393,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"version\": \"9\",\n    \"servicesUrls\": [\"https://www.youtube.uy/\"],\n    \"minVersion\": \"4.0\",\n    \"owner\": \"5fad41acb8f9fe026ff14e68\"\n}",
+							"raw": "{\n    \"version\": \"2.0.0\",\n    \"servicesUrls\": [\"https://www.ute.uy/\"],\n    \"minVersion\": \"1.0\",\n    \"owner\": \"5fad7289ead39d001f473c8f\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -459,8 +505,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "user",
@@ -523,9 +568,7 @@
 							},
 							"response": []
 						}
-					],
-					"protocolProfileBehavior": {},
-					"_postman_isSubFolder": true
+					]
 				},
 				{
 					"name": "create user - last part",
@@ -534,7 +577,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"username\": \"Pepe Lew Pew\",\n    \"name\": \"Pepe Le Pew\",\n    \"email\": \"lepew@gmail.com\",\n    \"age\": 27,\n    \"location\": \"Pocitos, Montevideo\",\n    \"password\": \"test12345\",\n    \"activation\": \"cccccccccc\",\n    \"role\": \"superAdmin\"\n}",
+							"raw": "{\n    \"username\": \"Jonathan\",\n    \"name\": \"Jonathan\",\n    \"email\": \"jjaime@kreitech.com.uy\",\n    \"location\": \"Pocitos, Montevideo\",\n    \"password\": \"qwerty12345\",\n    \"role\": \"superAdmin\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -562,7 +605,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"username\": \"Pepe Lew Pew\",\n    \"name\": \"Pepe Le Pew\",\n    \"email\": \"lepew@gmail.com\",\n    \"age\": 27,\n    \"location\": \"Pocitos, Montevideo\",\n    \"password\": \"test12345\",\n    \"activation\": \"cccccccccc\",\n    \"role\": \"superAdmin\"\n}",
+							"raw": "{\n    \"username\": \"Jonathan\",\n    \"name\": \"Jonathan\",\n    \"email\": \"jjaime@kreitech.com.uy\",\n    \"location\": \"Pocitos, Montevideo\",\n    \"password\": \"ayaips\",\n    \"role\": \"superAdmin\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -773,15 +816,45 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
+		},
+		{
+			"name": "user app",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"5fbd355a5a3962001f637a60\",\n    \"apps\": {\n        \"_id\": \"5fbe585bfba12c001fe06557\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/userApp/create",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"userApp",
+								"create"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"event": [
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "4521a1d5-aedf-4fad-869e-028bffc4a068",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -791,7 +864,6 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "956dbe27-983d-4bee-97dd-ca51f556f944",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -801,10 +873,8 @@
 	],
 	"variable": [
 		{
-			"id": "de21c165-e1b1-480b-82ee-85ec870eee6b",
 			"key": "BASE_URL",
 			"value": ""
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }
