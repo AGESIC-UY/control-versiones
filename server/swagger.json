@@ -1042,7 +1042,7 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "query",
             "name": "name",
             "description": "Get Application by name",
             "required": true,
@@ -1051,12 +1051,21 @@
             }
           },
           {
-            "in": "path",
+            "in": "query",
             "name": "version",
             "description": "Get Application by version",
             "required": true,
             "schema": {
               "version": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "clientKey",
+            "description": "Get Application by clientKey",
+            "required": true,
+            "schema": {
+              "clientKey": "string"
             }
           }
         ],
@@ -1618,6 +1627,9 @@
     "Application": {
       "properties": {
         "identifier": {
+          "type": "string"
+        },
+        "clientKey": {
           "type": "string"
         },
         "name": {
