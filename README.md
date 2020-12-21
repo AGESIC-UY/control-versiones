@@ -6,8 +6,7 @@
 1. Clone the repository
 2. Install dependencies
 3. Set env variables
-4. Add SSL files
-5. Create database
+4. Create database
 
 **Install dependencies**
 
@@ -48,8 +47,6 @@ Example (include all of these):
     CLIENT_HOST=localhost
     CLIENT_PORT=3002
     REDIS_URL=redis://redis:6379
-    SSL_KEY=[SSL_KEY_FILE_NAME]
-    SSL_CRT=[SSL_CRT_FILE_NAME]
     DB_HOST=[MONGOLAB_DB_URL]
     DB_USER=[MONGOLAB_DB_USERNAME]
     DB_PASS=[MONGOLAB_DB_PASSWORD]
@@ -59,12 +56,6 @@ Example (include all of these):
 Located at `server/.env/development.config.env`.
 
 Note: if you change the ports change them in the dockerfiles too (root, server).
-
-**Add SSL files**
-
-Put your (for example) <code>crt.txt</code> and <code>key.txt</code> files inside <code>server/ssl/</code> folder.
-
-Tip: create them online for free at [ZeroSSL](https://zerossl.com/)
 
 **Create database**
 
@@ -127,6 +118,33 @@ Just overwrite the test, dev, build lines with the above.
 2. Go to <code>https://localhost:80</code>
 
 Note: you may need to install nodemon: <code>npm install nodemon -g</code>
+
+
+## How to run test
+
+From the terminal go to the server folder from the root directory of the project and execute the test like this:
+
+```
+cd server
+npm run test
+```
+#### through the docker container
+From the terminal execute the following command with the server container name
+```docker exec -it building_blocks_server /bin/bash;```
+
+#### important
+If throws some dependency error like ```missing formidable module```, execute the next command:
+
+```
+npm install -d
+```
+Then run the tests command as usual
+```
+npm run test
+```
+
+
+
 
 ## NPM Scripts
 
