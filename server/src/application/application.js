@@ -7,7 +7,7 @@ const {
   applicationGetOne,
   applicationGetAll,
   applicationFromMobile,
-  applicationCreateAll,
+  // applicationCreateAll,
   applicationGetRelevant
 } = require('./services/app')
 
@@ -55,24 +55,24 @@ action.applicationCreate = (req, res, next) => {
  *
  */
 
-action.applicationCreateAll = (req, res, next) => {
-  const data = req.body
-  show.debug('Add application...')
-  applicationCreateAll(data, (err, application) => {
-    if (!err && application) {
-      show.debug('Application created!')
-      return res.json({
-        code: 200,
-        message: 'Exito',
-        description: 'Aplicacion creada correctamente',
-        application: application.id
-      })
-    } else {
-      show.debug('Application create failed!')
-      return res.json(err)
-    }
-  })
-}
+// action.applicationCreateAll = (req, res, next) => {
+//   const data = req.body
+//   show.debug('Add application...')
+//   applicationCreateAll(data, (err, application) => {
+//     if (!err && application) {
+//       show.debug('Application created!')
+//       return res.json({
+//         code: 200,
+//         message: 'Exito',
+//         description: 'Aplicacion creada correctamente',
+//         application: application.id
+//       })
+//     } else {
+//       show.debug('Application create failed!')
+//       return res.json(err)
+//     }
+//   })
+// }
 
 /**
  * Application Update

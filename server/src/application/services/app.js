@@ -42,63 +42,63 @@ const create = (data, callback) => {
     })
 }
 
-/**
- * Create application type and version
- * @function
- * @param {object} data
- * @param {function(*=, *=): (*)} callback
- */
-const createAll = (data, callback) => {
-    const { name, description, version: { minVersion, servicesUrls, version }, type } = data
-    const md5Identifier = md5(name + Math.random().toString(36).substring(7))
-    let responseMsg = {
-        code: 422,
-        message: 'Ocurrió un error',
-        description: 'Aplicacion: el nombre ya ha sido registrado'
-    }
-    Application.exists({ name: name }, (_err, appExists) => {
-        if (appExists) {
-            callback(responseMsg)
-        } else {
-            const typeData = new Type({
-                name: type
-            })
-            typeData.save((err, doc) => {
-                if (err) {
-                    responseMsg.description = 'Tipo: Nombre es requerido'
-                    return callback(responseMsg, null)
-                }
-                const applicationData = new Application({
-                    identifier: md5Identifier,
-                    description,
-                    type: typeData._id,
-                    name
-                })
-                applicationData.save((err, applicationData) => {
-                    if (err) {
-                        responseMsg.description = 'Aplicacion: No se propocionaron datos requeridos o estos son mas cortos que 5 caracteres o mayores a 100'
-                        return callback(responseMsg, null)
-                    } else {
-                        const versionData = new Version({
-                            owner: applicationData._id,
-                            version: version,
-                            servicesUrls: servicesUrls,
-                            minVersion: minVersion
-                      })
-                      versionData.save((err, versionData) => {
-                        if (!err && versionData) {
-                            return callback(null, versionData)
-                        } else {
-                            responseMsg.description = 'Version: No se propocionaron datos requeridos o estos son mas cortos que 5 caracteres o mayores a 100'
-                            return callback(responseMsg, null)
-                        }
-                    })
-                    }
-                })
-            })
-        }
-    })
-}
+// /**
+//  * Create application type and version
+//  * @function
+//  * @param {object} data
+//  * @param {function(*=, *=): (*)} callback
+//  */
+// const createAll = (data, callback) => {
+//     const { name, description, version: { minVersion, servicesUrls, version }, type } = data
+//     const md5Identifier = md5(name + Math.random().toString(36).substring(7))
+//     let responseMsg = {
+//         code: 422,
+//         message: 'Ocurrió un error',
+//         description: 'Aplicacion: el nombre ya ha sido registrado'
+//     }
+//     Application.exists({ name: name }, (_err, appExists) => {
+//         if (appExists) {
+//             callback(responseMsg)
+//         } else {
+//             const typeData = new Type({
+//                 name: type
+//             })
+//             typeData.save((err, doc) => {
+//                 if (err) {
+//                     responseMsg.description = 'Tipo: Nombre es requerido'
+//                     return callback(responseMsg, null)
+//                 }
+//                 const applicationData = new Application({
+//                     identifier: md5Identifier,
+//                     description,
+//                     type: typeData._id,
+//                     name
+//                 })
+//                 applicationData.save((err, applicationData) => {
+//                     if (err) {
+//                         responseMsg.description = 'Aplicacion: No se propocionaron datos requeridos o estos son mas cortos que 5 caracteres o mayores a 100'
+//                         return callback(responseMsg, null)
+//                     } else {
+//                         const versionData = new Version({
+//                             owner: applicationData._id,
+//                             version: version,
+//                             servicesUrls: servicesUrls,
+//                             minVersion: minVersion
+//                       })
+//                       versionData.save((err, versionData) => {
+//                         if (!err && versionData) {
+//                             return callback(null, versionData)
+//                         } else {
+//                             responseMsg.description = 'Version: No se propocionaron datos requeridos o estos son mas cortos que 5 caracteres o mayores a 100'
+//                             return callback(responseMsg, null)
+//                         }
+//                     })
+//                     }
+//                 })
+//             })
+//         }
+//     })
+// }
 
 /**
  * Update application
@@ -131,21 +131,16 @@ const update = async (data, callback) => {
 const get = (id, callback) => {
     Application.findOne({ name: id })
     .populate({ path: 'type' })
-    .populate({ path: 'version' })
+    .populate('versions')
     .exec(function (err, app) {
-        const versionArr = []
-        if (err) {
-            console.log('there is an error', err)
-            return callback(err)
+        if (err || app === null) {
+            const responseMsg = {
+                code: 404,
+                message: 'Ocurrio un error',
+                description: 'Aplicacion no encontrada'
+            }
+            return callback(responseMsg, null)
         } else {
-            Version.find({ owner: app._id }, (err, versions) => {
-                if (err) {
-                    console.debug(err)
-                } else {
-                    versionArr.push(versionArr[0])
-                }
-              }).sort({ 'updatedAt': 'desc' })
-
             return callback(null, app)
         }
     })
@@ -159,56 +154,59 @@ const getApp = async (data, callback) => {
         description: 'Aplicacion no encontrada'
     }
     let versionValue = version
-    Application.findOne({ name: name })
+    Application.findOne({ clientKey: clientKey })
     .populate({ path: 'type' }).lean()
     .exec(function (_err, app) {
         if (app === null) {
+            responseMsg.code = 400
+            responseMsg.description = 'Client key invalido'
             return callback(responseMsg, null)
         } else {
-            if (clientKey !== app.clientKey) {
-                responseMsg.description = 'Client key invalido'
+            if (name !== app.name) {
+                responseMsg.code = 400
+                responseMsg.description = 'Nombre de aplicacion invalido'
              return callback(responseMsg, null)
-            }
-            Version.findOne({ owner: app._id, version: version }, async (err, version) => {
-                if (version !== null && err === null) {
-                    if (versionValue < version.minVersion) {
-                        delete app.versions
-                        app['versions'] = version
-                        responseMsg.code = 200
-                        responseMsg.message = 'Actualizar'
-                        responseMsg.description = 'Tu version esta desactualizada'
-                        responseMsg['app'] = app
-                        return callback(null, responseMsg)
-                    } else {
-                        delete app.versions
-                        app['versions'] = version
-                        responseMsg.code = 200
-                        responseMsg.message = 'Exito'
-                        responseMsg.description = 'Version encontrada'
-                        responseMsg['app'] = app
-                        return callback(null, responseMsg)
-                    }
-                } else {
-                    Version.findOne({ owner: app._id }).sort({ 'updatedAt': 'desc' }).limit(1).exec(function (_err, version) {
-                        if (version === null) {
-                            responseMsg.code = 404
-                            responseMsg.message = 'Ocurrio un error'
-                            responseMsg.description = 'No se encontro ninguna version registrada'
+            } else {
+                Version.findOne({ owner: app._id, version: version }, async (err, version) => {
+                    if (version !== null && err === null) {
+                        if (versionValue < version.minVersion) {
+                            delete app.versions
+                            app['versions'] = version
+                            responseMsg.code = 200
+                            responseMsg.message = 'Actualizar'
+                            responseMsg.description = 'Tu version esta desactualizada'
                             responseMsg['app'] = app
-                            return callback(responseMsg, null)
+                            return callback(null, responseMsg)
                         } else {
-                            console.debug('real ELSE', version)
                             delete app.versions
                             app['versions'] = version
                             responseMsg.code = 200
                             responseMsg.message = 'Exito'
-                            responseMsg.description = 'No se encontro version, se proporciona los datos de la última version registrada'
+                            responseMsg.description = 'Version encontrada'
                             responseMsg['app'] = app
-                            return callback(responseMsg, null)
+                            return callback(null, responseMsg)
                         }
-                    })
-                }
-              })
+                    } else {
+                        Version.findOne({ owner: app._id }).sort({ 'updatedAt': 'desc' }).limit(1).exec(function (_err, version) {
+                            if (version === null) {
+                                responseMsg.code = 404
+                                responseMsg.message = 'Ocurrio un error'
+                                responseMsg.description = 'No se encontro ninguna version registrada'
+                                responseMsg['app'] = app
+                                return callback(responseMsg, null)
+                            } else {
+                                delete app.versions
+                                app['versions'] = version
+                                responseMsg.code = 200
+                                responseMsg.message = 'Exito'
+                                responseMsg.description = 'No se encontro version, se proporciona los datos de la última version registrada'
+                                responseMsg['app'] = app
+                                return callback(responseMsg, null)
+                            }
+                        })
+                    }
+                  })
+            }
         }
     })
 }
@@ -272,6 +270,6 @@ module.exports = {
     applicationGetOne: get,
     applicationGetAll: getApllications,
     applicationFromMobile: getApp,
-    applicationCreateAll: createAll,
+    // applicationCreateAll: createAll,
     applicationGetRelevant: getRelevant
 }

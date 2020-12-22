@@ -52,11 +52,20 @@ const remove = (data, callback) => {
 
 const get = (data, callback) => {
   const id = data
-  User.findById(id, (err, user) => {
+  const responseMsg = {
+    code: 404,
+    message: 'Ocurrio un error',
+    description: 'Usuario no encontrado'
+  }
+  User.findById(id).lean().exec(function (err, user) {
     if (!err && user) {
-      return callback(null, user)
+      responseMsg.code = 200
+      responseMsg.message = 'Exito'
+      responseMsg.description = 'Usuario encontrado'
+      responseMsg['user'] = user
+      return callback(null, responseMsg)
     } else {
-      return callback(err)
+      return callback(responseMsg, null)
     }
   })
 }
