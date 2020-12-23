@@ -143,6 +143,31 @@ Then run the tests command as usual
 npm run test
 ```
 
+## Creating Super Admin user
+This user is created when the containers are built, it only runs once and you should edit the user parameters before running the docker-compose, to customize the credentials go to:
+
+``` server/defaultSuperAdmin/createSuperAdmin.js```
+
+here define your credentials:
+
+```
+
+User.register({
+  'username': 'Agesic',
+  'name': 'Agesic super admin',
+  'email': 'superadmin@gub.uy',
+  'location': 'Pocitos, Montevideo',
+  'password': 'qwerty12345',
+  'role': 'superAdmin'
+}, (err, user) => {
+  if (!err && user) {
+    console.debug('Registration success!')
+  } else {
+    console.debug('Registration failed!')
+  }
+})
+
+```
 
 
 

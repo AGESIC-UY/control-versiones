@@ -8,3 +8,6 @@ RUN npm install
 COPY . ./
 EXPOSE 80
 CMD ["npm", "run", "dev"]
+
+RUN chmod +x ./create-user.sh
+RUN ./create-user.sh
