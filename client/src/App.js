@@ -57,7 +57,7 @@ class App extends Component {
         this.props.setAuth(false)
         this.notification({
           type: 'danger',
-          title: 'Failed!',
+          title: 'Error!',
           message: 'Usuario no loggeado!'
         })
         return Promise.reject(error)

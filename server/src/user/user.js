@@ -79,18 +79,12 @@ action.UserGetOne = (req, res, next) => {
   show.debug('Getting user...')
   userGetOne(data, (err, user) => {
     if (!err) {
-      show.debug('User get success!', user)
-      return res.json({
-        user: 'userGetOne',
-        success: true,
-        userData: user
-      })
+      delete user.user.password
+      delete user.user.salt
+      return res.json(user)
     } else {
       show.debug('User got failed!')
-      return res.json({
-        type: 'userGetOne',
-        success: false
-      })
+      return res.json(err)
     }
   })
 }

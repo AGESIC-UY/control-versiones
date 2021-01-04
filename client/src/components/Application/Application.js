@@ -50,7 +50,7 @@ const tableIcons = {
 
 
 const api = axios.create({
-    baseURL: `http://localhost:3001/api/`,
+    baseURL: `http://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/`,
     withCredentials: true
 })
 
@@ -210,7 +210,7 @@ class Application extends Component {
                     <FormControl className={styles.formStyle}>
                         <Select
                           disabled={true}
-                          value={rowData['type']['_id'].toString()}
+                          value={rowData['type'] ? rowData['type']['_id'].toString() : '' }
                           >
                             {Object.entries(this.state.typeList).map(type => <MenuItem key={type[0]} value={type[0]}>{type[1]}</MenuItem>)}
 
@@ -240,7 +240,7 @@ class Application extends Component {
                     searchPlaceholder: 'Buscar'
                 },
                 pagination: {
-                    labelRowsSelect: 'Paginas',
+                    labelRowsSelect: 'Registros',
                     labelDisplayedRows: '{count} de {from}-{to}',
                     firstTooltip: 'Primera página',
                     previousTooltip: 'Página anterior',

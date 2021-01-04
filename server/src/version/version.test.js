@@ -1,119 +1,206 @@
-// 'use strict'
+'use strict'
 
-// process.env.NODE_ENV = 'test'
-// let chai = require('chai')
-// const expect = chai.expect
-// const version = require('./index')
-// const VersionModel = require('./version.model')
-// const AppModel = require('./../application/application.model')
-// const TypeModel = require('./../type/type.model')
-// const UserModel = require('./../user/user.model')
-// let chaiHttp = require('chai-http')
-// const { config } = require('../config')
-// // let should = chai.should()
-// const url = `http://${config.host}:${config.port}/api/`
+process.env.NODE_ENV = 'test'
+require('dotenv').config()
+let chai = require('chai')
+let chaiHttp = require('chai-http')
+const { config } = require('../config')
+chai.use(chaiHttp)
 
-// const userData = {
-//   id: 'asdasdasdasd',
-//   username: 'test1',
-//   name: 'test1',
-//   email: 'test@test.com',
-//   salt: 'aaaaaaaaaaa',
-//   password: 'bbbbbbbbbbb',
-//   activation: 'cccccccccc'
-// }
+const url = `http://${config.host}:${config.port}/api/`
 
-// chai.use(chaiHttp)
+const userCredentials = {
+  'email': process.env.SUPER_ADMIN_EMAIL,
+  'password': process.env.SUPER_ADMIN_PASSWORD
+}
 
-// describe('Version', () => {
-//   let versions
-//   let app
-//   let type
-//   let user
-//   beforeEach((done) => {
-//     user = new UserModel(userData)
-//     user.save().then(() => console.log('user guardado'))
-//     type = new TypeModel({
-//       name: 'Desktop'
-//     })
+const app = {
+  name: 'Application for version test',
+  description: 'Just a test application description'
+}
 
-//     type.save().then(() => console.log('type guardado'))
-//     versions = new VersionModel({
-//       version: 'first',
-//       servicesUrls: [],
-//       minVersion: '1.1'
-//     })
+let loginCookie
+let appReference
+let versionReference
 
-//     versions.save().then(() => console.log('version guardado'))
+describe('Version', () => {
+  before(() => {
+    chai.request(url)
+      .post('auth/login/local')
+      .send(userCredentials)
+      .end((_err, res) => {
+        chai.expect(res).to.have.status(200)
+        chai.expect(res.body.success).equal(true)
+        chai.expect(res.body).to.be.a('object')
+        chai.expect(res.body).to.have.property('user')
+        chai.expect(res.body).to.have.property('success').to.equal(true)
+        loginCookie = res.headers['set-cookie']
+      })
+  })
 
-//     app = new AppModel({
-//       identifier: 'test1',
-//       name: 'test1',
-//       description: 'test1',
-//       type: type,
-//       version: versions
-//     })
+  describe('/POST version', () => {
+    it('it should not be authorize to create version', (done) => {
+      chai.request(url)
+        .post('application/create')
+        .set('Cookie', loginCookie)
+        .send(app)
+        .end((_err, res) => {
+          appReference = res.body.application
+          const version = { version: '1.0.0', servicesUrls: ['https://www.gub.uy/'], minVersion: '1.0.0', owner: res.body.application }
+          chai.request(url)
+            .post('version/create')
+            .send(version)
+            .end((_err, res) => {
+              chai.expect(res.error).to.have.status(401)
+              chai.expect(res.error).to.have.property('text').to.equal('Not authorized request!')
+              chai.request(url)
+                .delete('application/remove')
+                .set('Cookie', loginCookie)
+                .send({ id: appReference })
+                .end(function (_err, res) {
+                })
+            })
+          done()
+        })
+    })
 
-//     app.save().then(() => console.log('app guardado'))
+    it('it should create version', (done) => {
+      app.name = 'App version 2'
+      chai.request(url)
+        .post('application/create')
+        .set('Cookie', loginCookie)
+        .send(app)
+        .end((_err, res) => {
+          appReference = res.body.application
+          const version = { version: '1.0.0', servicesUrls: ['https://www.gub.uy/'], minVersion: '1.0.0', owner: appReference }
+          chai.request(url)
+            .post('version/create')
+            .set('Cookie', loginCookie)
+            .send(version)
+            .end((_err, res) => {
+              versionReference = res.body.version
+              chai.expect(res.body).to.be.a('object')
+              chai.expect(res.body).to.have.property('code').to.equal(200)
+              chai.expect(res.body.message).equal('Exito')
+              chai.expect(res.body.description).equal('Version creada correctamente')
+              chai.expect(res.body).to.have.property('version').to.be.a('string')
+              done()
+            })
+        })
+    })
+  })
 
-//     done()
-//   })
+  describe('/UPDATE version', () => {
+    it('it should not be authorize to update the version', (done) => {
+      chai.request(url)
+        .post('version/update')
+        .send({ id: versionReference, version: '1.0.1', minVersion: '1.0.0' })
+        .end(function (_err, res) {
+          chai.expect(res.error).to.have.status(401)
+          chai.expect(res.error).to.have.property('text').to.equal('Not authorized request!')
+          done()
+        })
+    })
 
-//   it('should get version object', () => {
-//     expect(version).to.be.an('object')
-//   })
+    it('it should update the type', (done) => {
+      chai.request(url)
+        .post('version/update')
+        .set('Cookie', loginCookie)
+        .send({ id: versionReference, version: '1.0.1', minVersion: '1.0.0' })
+        .end(function (_err, res) {
+          chai.expect(res.body).to.be.a('object')
+          chai.expect(res.body).to.have.property('code').to.equal(200)
+          chai.expect(res.body.message).equal('Exito')
+          chai.expect(res.body.description).equal('Version actualizada correctamente')
+          chai.expect(res.body).to.have.property('version').to.be.a('object')
+          done()
+        })
+    })
+  })
 
-//   describe('/POST version', () => {
-//     it('it should not POST a version', (done) => {
-//       let version = {
-//         version: '1',
-//         servicesUrls: [],
-//         minVersion: '1'
-//       }
-//       chai.request(url)
-//         .post('version/create')
-//         .send(version)
-//         .end((_err, res) => {
-//           res.should.have.status(401)
-//           done()
-//         })
-//     })
+  describe('/GET Version', () => {
+    it('it should not be authorize to get the version', (done) => {
+      chai.request(url)
+        .get(`version/${versionReference}`)
+        .end(function (_err, res) {
+          chai.expect(res.error).to.have.status(401)
+          chai.expect(res.error).to.have.property('text').to.equal('Not authorized request!')
+          done()
+        })
+    })
 
-//     it('it should POST a version ', (done) => {
-//       let version = {
-//         version: 'first',
-//         servicesUrls: [],
-//         minVersion: '1.1'
-//       }
+    it('it should not found and get the type', (done) => {
+      chai.request(url)
+        .get('version/00000000')
+        .set('Cookie', loginCookie)
+        .end(function (_err, res) {
+          chai.expect(res.body).to.be.a('object')
+          chai.expect(res.body).to.have.property('code').to.equal(404)
+          chai.expect(res.body.message).equal('Ocurrio un error')
+          chai.expect(res.body.description).equal('Version no encontrada')
+          done()
+        })
+    })
 
-//       chai.request(url)
-//         .post('version/create')
-//         .auth('user', 'pass')
-//         .send(version)
-//         .end((_err, res) => {
-//           // TODO arreglar test, este es un endpoint ptotegido, tiene que dar 200.
-//           res.should.have.status(401)
-//           // res.body.should.be.a('object');
-//           // res.body.should.have.property('message').eql('Book successfully added!');
-//           // res.body.book.should.have.property('title');
-//           // res.body.book.should.have.property('author');
-//           // res.body.book.should.have.property('pages');
-//           // res.body.book.should.have.property('year');
-//           done()
-//         })
-//     })
-//   })
+    it('it should get the version', (done) => {
+      chai.request(url)
+        .get(`version/${versionReference}`)
+        .set('Cookie', loginCookie)
+        .end(function (_err, res) {
+          chai.expect(res.body).to.be.a('object')
+          chai.expect(res.body).to.have.property('code').to.equal(200)
+          chai.expect(res.body.message).equal('Exito')
+          chai.expect(res.body.description).equal('Version encontrada con exito')
+          chai.expect(res.body).to.have.property('version').to.be.a('object')
+          done()
+        })
+    })
 
-//   describe('/GET version', () => {
-//     it('it should GET all version', (done) => {
-//       chai.request(url)
-//         .get('version/all')
-//         .end((_err, res) => {
-//           res.should.have.status(200)
-//           // res.body.should.be.a('array')
-//           // res.body.length.should.be.eql(0)
-//           done()
-//         })
-//     })
-//   })
-// })
+    it('it should get all versions', (done) => {
+      chai.request(url)
+        .get('version/all/versions')
+        .set('Cookie', loginCookie)
+        .end(function (_err, res) {
+          chai.expect(res.body).to.be.a('object')
+          chai.expect(res.body).to.have.property('code').to.equal(200)
+          chai.expect(res.body.message).equal('Exito')
+          chai.expect(res.body.description).equal('Versiones encontradas con exito')
+          chai.expect(res.body).to.have.property('versions').to.be.a('array')
+          done()
+        })
+    })
+  })
+
+  describe('/REMOVE Version', () => {
+    it('it should not be authorize to remove the version', (done) => {
+      chai.request(url)
+        .delete('version/remove')
+        .send({ id: versionReference })
+        .end(function (_err, res) {
+          chai.expect(res.error).to.have.status(401)
+          chai.expect(res.error).to.have.property('text').to.equal('Not authorized request!')
+          done()
+        })
+    })
+
+    it('it should remove the version', (done) => {
+      chai.request(url)
+        .delete('version/remove')
+        .set('Cookie', loginCookie)
+        .send({ id: { _id: versionReference }, appId: appReference })
+        .end(function (_err, res) {
+          chai.expect(res.body).to.be.a('object')
+          chai.expect(res.body).to.have.property('code').to.equal(200)
+          chai.expect(res.body.message).equal('Exito')
+          chai.expect(res.body.description).equal('Version removida con exito')
+          chai.request(url)
+            .delete('application/remove')
+            .set('Cookie', loginCookie)
+            .send({ id: appReference })
+            .end(function (_err, res) {
+              done()
+            })
+        })
+    })
+  })
+})

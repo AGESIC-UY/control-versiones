@@ -119,30 +119,6 @@ Just overwrite the test, dev, build lines with the above.
 
 Note: you may need to install nodemon: <code>npm install nodemon -g</code>
 
-
-## How to run test
-
-From the terminal go to the server folder from the root directory of the project and execute the test like this:
-
-```
-cd server
-npm run test
-```
-#### through the docker container
-From the terminal execute the following command with the server container name
-```docker exec -it building_blocks_server /bin/bash;```
-
-#### important
-If throws some dependency error like ```missing formidable module```, execute the next command:
-
-```
-npm install -d
-```
-Then run the tests command as usual
-```
-npm run test
-```
-
 ## Creating Super Admin user
 This user is created when the containers are built, it only runs once and you should edit the user parameters before running the docker-compose, to customize the credentials go to:
 
@@ -168,6 +144,38 @@ User.register({
 })
 
 ```
+
+
+
+## Before running the tests
+1. Add to the test env the following data
+
+```
+SUPER_ADMIN_EMAIL='...'
+SUPER_ADMIN_PASSWORD='...'
+
+```
+**NOTE:**
+
+**This should we the super admin credentials, while running the test version, type, application and user application will be created to test the whole flow of the application including auth protection to the routes, at the end of each test file all will get removed.**
+
+## How to run the tests through the docker container
+
+1. First start the development container
+2. then from the terminal execute the following command with the server container name
+```docker exec -it building_blocks_server /bin/bash;```
+
+#### important
+If throws some dependency error like ```missing formidable module```, execute the next command:
+
+```
+npm install -d
+```
+Then run the tests command as usual
+```
+npm run test
+```
+
 
 
 

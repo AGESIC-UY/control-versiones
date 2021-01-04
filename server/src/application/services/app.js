@@ -108,7 +108,7 @@ const create = (data, callback) => {
  */
 const update = async (data, callback) => {
     const { _id, type, version, description } = data
-    let typeId = type._id
+    let typeId = type && type._id
         Application.findByIdAndUpdate(_id,
             {
                 description: description,
