@@ -10,7 +10,9 @@
     "dev": "nodemon app.js -L --exec \"node\"",
     "test": "mocha --exit --reporter spec --timeout 15000  \"src/*/*.test.js\"",
     "build": "webpack --config webpack.config.js",
-    "start": "pm2-runtime start app.js -i max",
+    "postinstall": "npm run build",
+    "start": "node app.js",
+    "start-prod": "pm2-runtime start app.js -i max",
     "stop": "pm2 stop all",
     "delete": "pm2 delete app"
   },
