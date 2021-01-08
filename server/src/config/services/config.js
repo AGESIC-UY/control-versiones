@@ -1,5 +1,4 @@
 'use strict'
-
 const fs = require('fs')
 const path = require('path')
 const crypto = require('crypto')
@@ -9,12 +8,15 @@ if (env === 'production') {
   basePath = './'
 }
 const envPath = path.join(basePath, `.env/${env}.config.env`)
-const envConfig = require('dotenv').config({
-  path: envPath
-})
-if (envConfig.error) {
-  throw envConfig.error
+if (fs.existsSync(envPath)) {
+  const envConfig = require('dotenv').config({
+    path: envPath
+  })
+  if (envConfig.error) {
+    throw envConfig.error
+  }
 }
+
 const redisSecret = crypto.randomBytes(48).toString('hex')
 
 /**
@@ -28,10 +30,6 @@ const test = {
   url: `http://${process.env.CLIENT_HOST}:${process.env.CLIENT_PORT}`,
   redisUrl: process.env.REDIS_URL,
   redisSecret,
-  sslOptions: {
-    key: fs.readFileSync(path.join(basePath, `ssl/${process.env.SSL_KEY}`)),
-    cert: fs.readFileSync(path.join(basePath, `ssl/${process.env.SSL_CRT}`))
-  },
   emailAddress: process.env.EMAIL_ADDRESS,
   emailPassword: process.env.EMAIL_PASS,
   mongoUrl: `mongodb://${process.env.DB_USER}:${encodeURIComponent(process.env.DB_PASS)}@${process.env.DB_HOST}/${process.env.DB_NAME}`,
@@ -50,10 +48,6 @@ const development = {
   url: `http://${process.env.CLIENT_HOST}:${process.env.CLIENT_PORT}`,
   redisUrl: process.env.REDIS_URL,
   redisSecret,
-  sslOptions: {
-    key: fs.readFileSync(path.join(basePath, `ssl/${process.env.SSL_KEY}`)),
-    cert: fs.readFileSync(path.join(basePath, `ssl/${process.env.SSL_CRT}`))
-  },
   emailAddress: process.env.EMAIL_ADDRESS,
   emailPassword: process.env.EMAIL_PASS,
   mongoUrl: `mongodb://${process.env.DB_USER}:${encodeURIComponent(process.env.DB_PASS)}@${process.env.DB_HOST}/${process.env.DB_NAME}`,
@@ -72,10 +66,6 @@ const production = {
   url: `https://${process.env.HOST}:${process.env.PORT}`,
   redisUrl: process.env.REDIS_URL,
   redisSecret,
-  sslOptions: {
-    key: fs.readFileSync(path.join(basePath, `ssl/${process.env.SSL_KEY}`)),
-    cert: fs.readFileSync(path.join(basePath, `ssl/${process.env.SSL_CRT}`))
-  },
   emailAddress: process.env.EMAIL_ADDRESS,
   emailPassword: process.env.EMAIL_PASS,
   mongoUrl: `mongodb://${process.env.DB_USER}:${encodeURIComponent(process.env.DB_PASS)}@${process.env.DB_HOST}/${process.env.DB_NAME}`,

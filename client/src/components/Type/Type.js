@@ -46,7 +46,7 @@ const tableIcons = {
 };
 
 const api = axios.create({
-    baseURL: `http://localhost:3001/api/`,
+    baseURL: `http://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/`,
     withCredentials: true
 })
 

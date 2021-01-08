@@ -41,7 +41,7 @@ const create = (data, callback) => {
                                     }
                                 ).exec(function (err, app) {
                                     if (!err && app) {
-                                        console.debug('saved app', app)
+                                        console.debug('saved app')
                                     } else {
                                         console.log('err saving app', err)
                                     }
@@ -68,7 +68,7 @@ const create = (data, callback) => {
                                 }
                             ).exec(function (err, app) {
                                 if (!err && app) {
-                                    console.debug('saved app', app)
+                                    console.debug('saved app')
                                 } else {
                                     console.log('err saving app', err)
                                 }

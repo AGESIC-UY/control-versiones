@@ -38,7 +38,6 @@ action.versionCreate = (req, res, next) => {
           description: 'Aplicacion, version, url de servicios y version minima son requeridos'
         })
       }
-    
     }
   })
 }
@@ -50,8 +49,6 @@ action.versionUpdate = (req, res, next) => {
   const data = req.body
   show.debug('Changing version...')
   versionUpdate(data, (err, version) => {
-    console.debug(err)
-
     if (!err && version) {
       show.debug('Version change success!')
       const data = {

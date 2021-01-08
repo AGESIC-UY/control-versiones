@@ -1,8 +1,6 @@
 import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { storeData, getData } from './store'
-
-const serviceURL = 'http://192.168.1.42:3001/api/';
+// TODO - CHANGE URL SERVICE
+const serviceURL = 'http://192.168.1.44:3001/api/';
 const versionesAPI = axios.create({
   baseURL: serviceURL,
 });

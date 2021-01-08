@@ -10,6 +10,9 @@
     "dev": "nodemon app.js -L --exec \"node\"",
     "test": "./node_modules/mocha/bin/mocha src/*/*.test.js --reporter spec",
     "build": "webpack --config webpack.config.js",
+    "postinstall": "npm run build",
+    "start": "node app.js",
+    "start-prod": "pm2-runtime start app.js -i max",
     "stop": "pm2 stop all",
     "delete": "pm2 delete app",
     "init-user": "node -e 'require(\"./defaultSuperAdmin/createSuperAdmin\").init()' && node -e 'require(\"./defaultSuperAdmin/createSuperAdmin\").activate()'"
