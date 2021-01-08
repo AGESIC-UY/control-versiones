@@ -120,35 +120,27 @@ Just overwrite the test, dev, build lines with the above.
 Note: you may need to install nodemon: <code>npm install nodemon -g</code>
 
 ## Creating Super Admin user
-This user is created when the containers are built, it only runs once and you should edit the user parameters before running the docker-compose, to customize the credentials go to:
+This user is created after all container are up, it only runs once and you should edit the user parameters before running the docker-compose, to customize the credentials go to:
 
-``` server/defaultSuperAdmin/createSuperAdmin.js```
+``` development.config.env```
 
-here define your credentials:
-
-```
-
-User.register({
-  'username': 'Agesic',
-  'name': 'Agesic super admin',
-  'email': 'superadmin@gub.uy',
-  'location': 'Pocitos, Montevideo',
-  'password': 'qwerty12345',
-  'role': 'superAdmin'
-}, (err, user) => {
-  if (!err && user) {
-    console.debug('Registration success!')
-  } else {
-    console.debug('Registration failed!')
-  }
-})
+here you can define your credentials:
 
 ```
+SUPER_ADMIN_USERNAME=
+SUPER_ADMIN_NAME=
+SUPER_ADMIN_EMAIL=
+SUPER_ADMIN_PASSWORD=
+SUPER_ADMIN_ROLE=
+
+```
+Then execute the following command to start the super admin user creation script:
+```docker exec -d building_blocks_server npm run init-user```
 
 
 
 ## Before running the tests
-1. Add to the test env the following data
+1. After running the super admin script Add to the test.config.env the following data, 
 
 ```
 SUPER_ADMIN_EMAIL='...'

@@ -11,7 +11,8 @@
     "test": "./node_modules/mocha/bin/mocha src/*/*.test.js --reporter spec",
     "build": "webpack --config webpack.config.js",
     "stop": "pm2 stop all",
-    "delete": "pm2 delete app"
+    "delete": "pm2 delete app",
+    "init-user": "node -e 'require(\"./defaultSuperAdmin/createSuperAdmin\").init()' && node -e 'require(\"./defaultSuperAdmin/createSuperAdmin\").activate()'"
   },
   "devDependencies": {
     "chai": "4.1.2",
