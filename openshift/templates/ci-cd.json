@@ -215,14 +215,14 @@
       "displayName": "Nombre del Proyecto",
       "description": "Se indica el nombre del proyecto.",
       "required": true,
-      "value": "tdev"
+      "value": "dev"
     },
     {
       "name": "PROJECT_NAME_PROD",
       "displayName": "Nombre del Proyecto Produccion",
       "description": "Se indica el nombre del proyecto produccion.",
       "required": true,
-      "value": "tprod"
+      "value": "prod"
     },
     {
       "name": "MEMORY_LIMIT",
@@ -236,7 +236,7 @@
       "displayName": "Git Repository URL",
       "description": "The URL of the repository with your application source code.",
       "required": true,
-      "value": "https://gitlab.com/antmar1271/koshift.git"
+      "value": "https://github.com/AGESIC-UY/control-versiones.git"
     },
     {
       "name": "SOURCE_REPOSITORY_REF",
@@ -247,7 +247,7 @@
       "name": "CONTEXT_DIR_JENKINS",
       "displayName": "Context Directory Jenkins",
       "description": "Set this to the relative path to your project if it is not in the root of your repository.",
-      "value": "solucion/openshift2"
+      "value": "openshift/pipeline"
     },
     {
       "name": "GIT_USER",
