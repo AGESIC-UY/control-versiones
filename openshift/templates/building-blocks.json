@@ -2,16 +2,16 @@
   "kind": "Template",
   "apiVersion": "v1",
   "metadata": {
-    "name": "nodejs-mongo-persistent",
+    "name": "bbdev",
     "annotations": {
       "openshift.io/display-name": "Building Blocks",
       "description": "An example Node.js application to frontend and a Node.js application with a MongoDB database. For more information about using this template, including OpenShift considerations, see https://github.com/sclorg/nodejs-ex/blob/master/README.md.",
-      "tags": "quickstart,nodejs,hidden",
+      "tags": "buildingblocks,nodejs,dev,mongo",
       "iconClass": "icon-nodejs",
-      "openshift.io/long-description": "This template defines resources needed to develop a NodeJS application, including a build configuration, application deployment configuration, and database deployment configuration.",
-      "openshift.io/provider-display-name": "Red Hat, Inc.",
-      "openshift.io/documentation-url": "https://github.com/sclorg/nodejs-ex",
-      "openshift.io/support-url": "https://access.redhat.com",
+      "openshift.io/long-description": "Este template define todas las imágenes a utilizar en ambiente dev en el proyecto BuildingBlocks",
+      "openshift.io/provider-display-name": "AGESIC - Kreitech ",
+      "openshift.io/documentation-url": "https://github.com/AGESIC-UY/control-versiones",
+      "openshift.io/support-url": "https://github.com/AGESIC-UY/control-versiones",
       "template.openshift.io/bindable": "false"
     }
   },
@@ -179,7 +179,7 @@
         "output": {
           "to": {
             "kind": "ImageStreamTag",
-            "name": "${NAME}:latest"
+            "name": "${NAME}:dev"
           }
         },
         "triggers": [          
@@ -197,61 +197,7 @@
           }
         ]
       }
-    },    
-    {
-      "kind": "BuildConfig",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "${NAME}pipeline",
-        "annotations": {
-          "description": "Defines the pipeline to build the application",        
-          "pipeline.alpha.openshift.io/uses": "[{\"name\": \"${NAME}\", \"name\": \"namespace\": \"\",\"kind\": \"DeploymentConfig\"},{\"name\": \"${NAME}frontend\", \"name\": \"namespace\": \"\",\"kind\": \"DeploymentConfig\"}]" 
-        }
-      },
-      "spec": {
-        "source": {
-          "type": "Git",
-          "git": {
-            "uri": "${SOURCE_REPOSITORY_URL}",
-            "ref": "${SOURCE_REPOSITORY_REF}"
-          },
-          "contextDir": "${CONTEXT_DIR_JENKINS}",
-          "sourceSecret": { 
-            "name": "${NAME}-git" 
-          }
-        },
-        "strategy": {
-          "type": "JenkinsPipeline",
-          "jenkinsPipelineStrategy": {           
-          "env": [
-            {
-              "name": "NAME",
-              "value": "${NAME}"
-            },
-            {
-              "name": "NAMEfrontend",
-              "value": "${NAME}frontend"
-            }
-          ],
-          "jenkinsfilePath": "Jenkinsfile"
-          }            
-        },       
-        "triggers": [          
-          {
-            "type": "GitHub",
-            "github": {
-              "secret": "${GITHUB_WEBHOOK_SECRET}"
-            }
-          },
-          {
-            "type": "Generic",
-            "generic": {
-              "secret": "${GENERIC_WEBHOOK_SECRET}"
-            }
-          }
-        ]
-      }
-    },
+    },        
     {
       "kind": "BuildConfig",
       "apiVersion": "v1",
@@ -293,7 +239,7 @@
         "output": {
           "to": {
             "kind": "ImageStreamTag",
-            "name": "${NAME}frontend:latest"
+            "name": "${NAME}frontend:dev"
           }
         },
         "triggers": [          
@@ -336,7 +282,7 @@
               ],
               "from": {
                 "kind": "ImageStreamTag",
-                "name": "${NAME}:latest"
+                "name": "${NAME}:dev"
               }
             }
           }
@@ -482,7 +428,7 @@
               ],
               "from": {
                 "kind": "ImageStreamTag",
-                "name": "${NAME}frontend:latest"
+                "name": "${NAME}frontend:dev"
               }
             }
           },

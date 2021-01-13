@@ -1,0 +1,287 @@
+{
+  "kind": "Template",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "ci-cd",
+    "annotations": {
+      "openshift.io/display-name": "Building Blocks CI/CD",
+      "description": "An example Node.js application to frontend and a Node.js application with a MongoDB database. For more information about using this template, including OpenShift considerations, see https://github.com/sclorg/nodejs-ex/blob/master/README.md.",
+      "tags": "jenkins, ci/cd",
+      "iconClass": "icon-nodejs",
+      "openshift.io/long-description": "This template defines resources needed to develop a NodeJS application, including a build configuration, application deployment configuration, and database deployment configuration.",
+      "openshift.io/provider-display-name": "Kreitech ",
+      "openshift.io/documentation-url": "https://github.com/sclorg/nodejs-ex",
+      "openshift.io/support-url": "https://access.redhat.com",
+      "template.openshift.io/bindable": "false"
+    }
+  },
+  "message": "The following service(s) have been created in your project: ${NAME}, ${DATABASE_SERVICE_NAME}.\n\nFor more information about using this template, including OpenShift considerations, see https://github.com/sclorg/nodejs-ex/blob/master/README.md.",
+  "labels": {
+    "template": "buildingblocks",
+    "app": "buildingblocks"
+  },
+  "objects": [      
+    {
+      "kind": "Secret",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}-git"
+      },
+      "stringData": {
+        "username": "${GIT_USER}",
+        "password": "${GIT_PASSWORD}"       
+      }
+    },              
+    {
+      "kind": "BuildConfig",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}pipeline${STAGE}",
+        "labels": {
+          "application": "${NAME}pipeline${STAGE}"         
+        },
+        "annotations": {
+          "description": "Defines the pipeline to build the application"          
+        }
+      },
+      "spec": {
+        "source": {
+          "type": "Git",
+          "git": {
+            "uri": "${SOURCE_REPOSITORY_URL}",
+            "ref": "${SOURCE_REPOSITORY_REF}"
+          },
+          "contextDir": "${CONTEXT_DIR_JENKINS}",
+          "sourceSecret": { 
+            "name": "${NAME}-git" 
+          }
+        },
+        "strategy": {
+          "type": "JenkinsPipeline",
+          "jenkinsPipelineStrategy": {           
+          "env": [
+            {
+              "name": "NAME",
+              "value": "${NAME}"
+            },
+            {
+              "name": "NAMEfrontend",
+              "value": "${NAME}frontend"
+            },  
+            {
+              "name": "GIT_USER",
+              "value": "${GIT_USER}"
+            },
+            {
+              "name": "GIT_PASSWORD",
+              "value": "${GIT_PASSWORD}"
+            },          
+            {
+              "name": "STAGE",
+              "value": "${STAGE}"
+            },
+            {
+              "name": "PROJECT_NAME",
+              "value": "${PROJECT_NAME}"
+            }            
+          ],
+          "jenkinsfilePath": "Jenkinsfile"
+          }            
+        },       
+        "triggers": [          
+          {
+            "type": "GitHub",
+            "github": {
+              "secret": "${GITHUB_WEBHOOK_SECRET}"
+            }
+          },
+          {
+            "type": "Generic",
+            "generic": {
+              "secret": "${GENERIC_WEBHOOK_SECRET}"
+            }
+          }
+        ]
+      }
+    },              
+    {
+      "kind": "BuildConfig",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}pipeline${STAGE_PROD}",
+        "labels": {
+          "application": "${NAME}pipeline${STAGE_PROD}"         
+        },
+        "annotations": {
+          "description": "Defines the pipeline to build the application"          
+        }
+      },
+      "spec": {
+        "source": {
+          "type": "Git",
+          "git": {
+            "uri": "${SOURCE_REPOSITORY_URL}",
+            "ref": "${SOURCE_REPOSITORY_REF}"
+          },
+          "contextDir": "${CONTEXT_DIR_JENKINS}",
+          "sourceSecret": { 
+            "name": "${NAME}-git" 
+          }
+        },
+        "strategy": {
+          "type": "JenkinsPipeline",
+          "jenkinsPipelineStrategy": {           
+          "env": [
+            {
+              "name": "NAME",
+              "value": "${NAME}"
+            },
+            {
+              "name": "NAMEfrontend",
+              "value": "${NAME}frontend"
+            },  
+            {
+              "name": "GIT_USER",
+              "value": "${GIT_USER}"
+            },
+            {
+              "name": "GIT_PASSWORD",
+              "value": "${GIT_PASSWORD}"
+            },          
+            {
+              "name": "STAGE",
+              "value": "${STAGE_PROD}"
+            },
+            {
+              "name": "PROJECT_NAME",
+              "value": "${PROJECT_NAME}"
+            },
+            {
+              "name": "PROJECT_NAME_PROD",
+              "value": "${PROJECT_NAME_PROD}"
+            }            
+          ],
+          "jenkinsfilePath": "Jenkinsfile"
+          }            
+        },       
+        "triggers": [          
+          {
+            "type": "GitHub",
+            "github": {
+              "secret": "${GITHUB_WEBHOOK_SECRET}"
+            }
+          },
+          {
+            "type": "Generic",
+            "generic": {
+              "secret": "${GENERIC_WEBHOOK_SECRET}"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "parameters": [
+    {
+      "name": "NAME",
+      "displayName": "Name",
+      "description": "The name assigned to all of the frontend objects defined in this template.",
+      "required": true,
+      "value": "buildingblocks"
+    },
+    {
+      "name": "NAMESPACE",
+      "displayName": "Namespace",
+      "description": "The OpenShift Namespace where the ImageStream resides.",
+      "required": true,
+      "value": "openshift"
+    },
+    {
+      "name": "STAGE",
+      "displayName": "Stage Staging",
+      "description": "staging  (indica el tipo de pipleline a realizar)",
+      "required": true,
+      "value": "staging"
+    },
+    {
+      "name": "STAGE_PROD",
+      "displayName": "Stage Production",
+      "description": "production (indica el tipo de pipleline a realizar)",
+      "required": true,
+      "value": "production"
+    },
+    {
+      "name": "PROJECT_NAME",
+      "displayName": "Nombre del Proyecto",
+      "description": "Se indica el nombre del proyecto.",
+      "required": true,
+      "value": "tdev"
+    },
+    {
+      "name": "PROJECT_NAME_PROD",
+      "displayName": "Nombre del Proyecto Produccion",
+      "description": "Se indica el nombre del proyecto produccion.",
+      "required": true,
+      "value": "tprod"
+    },
+    {
+      "name": "MEMORY_LIMIT",
+      "displayName": "Memory Limit",
+      "description": "Maximum amount of memory the Node.js container can use.",
+      "required": true,
+      "value": "512Mi"
+    },
+    {
+      "name": "SOURCE_REPOSITORY_URL",
+      "displayName": "Git Repository URL",
+      "description": "The URL of the repository with your application source code.",
+      "required": true,
+      "value": "https://gitlab.com/antmar1271/koshift.git"
+    },
+    {
+      "name": "SOURCE_REPOSITORY_REF",
+      "displayName": "Git Reference",
+      "description": "Set this to a branch name, tag or other ref of your repository if you are not using the default branch."
+    },   
+    {
+      "name": "CONTEXT_DIR_JENKINS",
+      "displayName": "Context Directory Jenkins",
+      "description": "Set this to the relative path to your project if it is not in the root of your repository.",
+      "value": "solucion/openshift2"
+    },
+    {
+      "name": "GIT_USER",
+      "displayName": "Git User",
+      "description": "Set this to user git for your repository.",
+      "value": ""
+    },
+    {
+      "name": "GIT_PASSWORD",
+      "displayName": "Git password",
+      "description": "Set this to password git for your repository.",
+      "value": ""
+    },
+    {
+      "name": "APPLICATION_DOMAIN",
+      "displayName": "Application Hostname",
+      "description": "The exposed hostname that will route to the Node.js service, if left blank a value will be defaulted.",
+      "value": ""
+    },
+    {
+      "name": "GITHUB_WEBHOOK_SECRET",
+      "displayName": "GitHub Webhook Secret",
+      "description": "Github trigger secret.  A difficult to guess string encoded as part of the webhook URL.  Not encrypted.",
+      "generate": "expression",
+      "from": "[a-zA-Z0-9]{40}"
+    },
+    {
+      "name": "GENERIC_WEBHOOK_SECRET",
+      "displayName": "Generic Webhook Secret",
+      "description": "A secret string used to configure the Generic webhook.",
+      "generate": "expression",
+      "from": "[a-zA-Z0-9]{40}"
+    }    
+  ]
+}
+
+

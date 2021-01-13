@@ -2,41 +2,48 @@ try {
     timeout(time: 30, unit: 'MINUTES') {
     def appName=env.NAME
     def appNamefrontend = env.NAMEfrontend
+    def git_user = env.GIT_USER
+    def git_password = env.GIT_PASSWORD
+    def stages = ""
     def project=""   
+    def projectprod = ""
     def verbose="false"
     def routeHost = ""
 
-    node {
+    node {       
         project = env.PROJECT_NAME
+        projectprod = env.PROJECT_NAME_PROD
+        stages = env.STAGE
+        echo "${stages}"
+        echo "-----"        
         stage("Initialize") {
-        
-        sh "oc get route ${appName} -n ${project} -o jsonpath='{ .spec.host }' --loglevel=4 > routehost"
-        routeHost = readFile('routehost').trim()
-        sh "oc get route ${appNamefrontend} -n ${project} -o jsonpath='{ .spec.host }' --loglevel=4 > routehost"
-        routeHost = readFile('routehost').trim()
+          node {
+            sh "oc get route ${appName} -n ${project} -o jsonpath='{ .spec.host }' --loglevel=4 > routehost"
+            routeHost = readFile('routehost').trim()
+            echo " ${routeHost}"
+            sh "oc get route ${appNamefrontend} -n ${project} -o jsonpath='{ .spec.host }' --loglevel=4 > routehost"
+            routeHost = readFile('routehost').trim()                    
+            echo " ${routeHost}"
+            echo "Finalización de Init"
+          }
         }
 
         openshift.withCluster() {
-        openshift.withProject() {
-            stage("Build Back") {
-              echo "building  ${appName}"
-              def bld = openshift.startBuild("${appName}")
-              bld.untilEach {
-                  return it.object().status.phase == "Running"
+          openshift.withProject() {
+              stage("Build & Deploy Backend") {
+                echo "building  ${appName}"
+                selectProject(project)
+                sh "oc start-build ${appName} -n ${project}" 
+                
               }
-              bld.logs('-f') 
-            }
-            stage("Build Front") {              
-              echo "building  ${appNamefrontend}"
-              def bldf = openshift.startBuild("${appNamefrontend}")
-              bldf.untilEach {
-                  return it.object().status.phase == "Running"
-              }
-              bldf.logs('-f') 
-            }                   
+              stage("Build & Deploy Frontend") {              
+                echo "building  ${appNamefrontend}"
+                selectProject(project)
+                sh "oc start-build ${appNamefrontend} -n ${project}"                             
+              }                   
+          }
         }
-        }
-    }
+      }
     }
 } catch (err) {
     echo "in catch block"
@@ -44,3 +51,11 @@ try {
     currentBuild.result = 'FAILURE'
     throw err
 }  
+
+private void selectProject(String project) {
+    sh "oc project ${project}"
+}
+
+
+
+
