@@ -341,7 +341,7 @@
                   },
                   {
                     "name": "CLIENT_PORT",
-                    "value": "${CLIENT_PORT}"
+                    "value": "80"
                   }, 
                   {
                     "name": "CLIENT_HOST",
@@ -353,11 +353,11 @@
                   }, 
                   {
                     "name": "HOST",
-                    "value": "${HOST}"
+                    "value": "localhost"
                   },
                   {
                     "name": "PORT",
-                    "value": "${PORT}"
+                    "value": "8080"
                   },                     
                   {
                     "name": "EMAIL_ADDRESS",
