@@ -840,7 +840,7 @@
       "name": "DB_HOST",
       "displayName": "Database Host",
       "required": true,
-      "value": ""
+      "value": "mongodb"
     },
     {
       "name": "DATABASE_ADMIN_PASSWORD",
@@ -859,25 +859,25 @@
       "name": "CLIENT_PORT",
       "displayName": "Frontend PORT URL",
       "description": "Frontend PORT URL.",
-      "value": "8080"
+      "value": "80"
     }, 
     {
       "name": "CLIENT_HOST",
-      "displayName": "Frontend PORT HOST",
-      "description": "Frontend PORT HOST.",
-      "value": "buildingblocks"
+      "displayName": "Frontend HOST URL",
+      "description": "Frontend HOST URL.",
+      "value": "buildingblocksfrontend-dev.te-apps.paas.red.uy"
     }, 
     {
       "name": "PORT",
       "displayName": "Backend PORT URL",
       "description": "Backend PORT URL.",
-      "value": "8080"
+      "value": "80"
     }, 
     {
       "name": "HOST",
-      "displayName": "Backend PORT HOST",
-      "description": "Backend PORT HOST.",
-      "value": "buildingblocksfrontend"
+      "displayName": "Backend  HOST URL",
+      "description": "Backend  HOST URL.",
+      "value": "buildingblocks-dev.te-apps.paas.red.uy"
     },           
     {
       "name": "EMAIL_ADDRESS",
@@ -893,9 +893,39 @@
     },
     {
       "name": "REACT_APP_HOST",
-      "displayName": "host to frontend",
-      "description": "host to frontend",
-      "value": ""
+      "displayName": "api url",
+      "description": "frontend variable used to access api url",
+      "value": "buildingblocks-dev.te-apps.paas.red.uy"
+    },
+    {
+      "name": "SUPER_ADMIN_USERNAME",
+      "displayName": "super admin username ",
+      "description": "super admin username, used to create the initial user ",
+      "value": "superusuario"
+    },
+    {
+      "name": "SUPER_ADMIN_NAME",
+      "displayName": "super admin name",
+      "description": "super admin name, used to create the initial user ",
+      "value": "Agesic"
+    },
+    {
+      "name": "SUPER_ADMIN_EMAIL",
+      "displayName": "super admin email",
+      "description": "super admin email, used to create the initial user ",
+      "value": "user@agesic.com.uy"
+    },
+    {
+      "name": "SUPER_ADMIN_PASSWORD",
+      "displayName": "super admin password",
+      "description": "super admin password, used to create the initial user ",
+      "value": "Agesic.123"
+    },
+    {
+      "name": "SUPER_ADMIN_ROLE",
+      "displayName": "super admin role",
+      "description": "super admin role, used to create the initial user ",
+      "value": "superAdmin"
     }
   ]
 }

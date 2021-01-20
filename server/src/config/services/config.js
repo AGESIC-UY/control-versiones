@@ -63,7 +63,7 @@ const production = {
   ip: process.env.IP,
   host: process.env.HOST,
   port: process.env.PORT,
-  url: `https://${process.env.HOST}:${process.env.PORT}`,
+  url: `https://${process.env.CLIENT_HOST}:${process.env.CLIENT_PORT}`,
   redisUrl: process.env.REDIS_URL,
   redisSecret,
   emailAddress: process.env.EMAIL_ADDRESS,
