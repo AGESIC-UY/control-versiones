@@ -2,14 +2,14 @@
   "kind": "Template",
   "apiVersion": "v1",
   "metadata": {
-    "name": "bbdev",
+    "name": "tprod",
     "annotations": {
-      "openshift.io/display-name": "Building Blocks",
+      "openshift.io/display-name": "Building Blocks Production",
       "description": "An example Node.js application to frontend and a Node.js application with a MongoDB database. For more information about using this template, including OpenShift considerations, see https://github.com/sclorg/nodejs-ex/blob/master/README.md.",
-      "tags": "buildingblocks,nodejs,dev,mongo",
+      "tags": "quickstart,nodejs,hidden",
       "iconClass": "icon-nodejs",
-      "openshift.io/long-description": "Este template define todas las imágenes a utilizar en ambiente dev en el proyecto BuildingBlocks",
-      "openshift.io/provider-display-name": "AGESIC - Kreitech ",
+      "openshift.io/long-description": "This template defines resources needed to develop a NodeJS application, including a build configuration, application deployment configuration, and database deployment configuration.",
+      "openshift.io/provider-display-name": "AGESIC",
       "openshift.io/documentation-url": "https://github.com/AGESIC-UY/control-versiones",
       "openshift.io/support-url": "https://github.com/AGESIC-UY/control-versiones",
       "template.openshift.io/bindable": "false"
@@ -117,147 +117,7 @@
           "name": "${NAME}frontend"
         }
       }
-    },
-    {
-      "kind": "ImageStream",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "${NAME}",
-        "annotations": {
-          "description": "Keeps track of changes in the application image"
-        }
-      }
-    },
-    {
-      "kind": "ImageStream",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "${NAME}frontend",
-        "annotations": {
-          "description": "Keeps track of changes in the application image frontend"
-        }
-      }
     },    
-    {
-      "kind": "BuildConfig",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "${NAME}",
-        "annotations": {
-          "description": "Defines how to build the application",
-          "template.alpha.openshift.io/wait-for-ready": "true"
-        }
-      },
-      "spec": {
-        "source": {
-          "type": "Git",
-          "git": {
-            "uri": "${SOURCE_REPOSITORY_URL}",
-            "ref": "${SOURCE_REPOSITORY_REF}"
-          },
-          "contextDir": "${CONTEXT_DIR}",
-          "sourceSecret": { 
-            "name": "${NAME}-git" 
-          }
-        },
-        "strategy": {
-          "type": "Source",
-          "sourceStrategy": {
-            "from": {
-              "kind": "ImageStreamTag",
-              "namespace": "${NAMESPACE}",
-              "name": "nodejs:${NODEJS_VERSION}"
-            },
-            "env":  [
-              {
-                "name": "NPM_MIRROR",
-                "value": "${NPM_MIRROR}"
-              }
-            ]
-          }
-        },
-        "output": {
-          "to": {
-            "kind": "ImageStreamTag",
-            "name": "${NAME}:dev"
-          }
-        },
-        "triggers": [          
-          {
-            "type": "GitHub",
-            "github": {
-              "secret": "${GITHUB_WEBHOOK_SECRET}"
-            }
-          },
-          {
-            "type": "Generic",
-            "generic": {
-              "secret": "${GENERIC_WEBHOOK_SECRET}"
-            }
-          }
-        ]
-      }
-    },        
-    {
-      "kind": "BuildConfig",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "${NAME}frontend",
-        "annotations": {
-          "description": "Defines how to build the application",
-          "template.alpha.openshift.io/wait-for-ready": "true"
-        }
-      },
-      "spec": {
-        "source": {
-          "type": "Git",
-          "git": {
-            "uri": "${SOURCE_REPOSITORY_URL}",
-            "ref": "${SOURCE_REPOSITORY_REF}"
-          },
-          "contextDir": "${CONTEXT_DIR_FRONTEND}",
-          "sourceSecret": { 
-            "name": "${NAME}-git" 
-          }
-        },
-        "strategy": {
-          "type": "Source",
-          "sourceStrategy": {
-            "from": {
-              "kind": "ImageStreamTag",
-              "namespace": "${NAMESPACE}",
-              "name": "nodejs:${NODEJS_VERSION}"
-            },
-            "env": [
-              {
-                "name": "NPM_MIRROR",
-                "value": "${NPM_MIRROR}"
-              }
-            ]
-          }
-        },
-        "output": {
-          "to": {
-            "kind": "ImageStreamTag",
-            "name": "${NAME}frontend:dev"
-          }
-        },
-        "triggers": [          
-          {
-            "type": "GitHub",
-            "github": {
-              "secret": "${GITHUB_WEBHOOK_SECRET}"
-            }
-          },
-          {
-            "type": "Generic",
-            "generic": {
-              "secret": "${GENERIC_WEBHOOK_SECRET}"
-            }
-          }
-        ]
-      }
-    },
     {
       "kind": "DeploymentConfig",
       "apiVersion": "v1",
@@ -282,7 +142,7 @@
               ],
               "from": {
                 "kind": "ImageStreamTag",
-                "name": "${NAME}:dev"
+                "name": "${NAME}:latest"
               }
             }
           }
@@ -366,6 +226,26 @@
                   {
                     "name": "EMAIL_PASS",
                     "value": "${EMAIL_PASS}"
+                  },                        
+                  {
+                    "name": "SUPER_ADMIN_USERNAME",
+                    "value": "${SUPER_ADMIN_USERNAME}"
+                  },
+                  {
+                    "name": "SUPER_ADMIN_NAME",
+                    "value": "${SUPER_ADMIN_NAME}"
+                  },
+                  {
+                    "name": "SUPER_ADMIN_EMAIL",
+                    "value": "${SUPER_ADMIN_EMAIL}"
+                  },
+                  {
+                    "name": "SUPER_ADMIN_PASSWORD",
+                    "value": "${SUPER_ADMIN_PASSWORD}"
+                  },
+                  {
+                    "name": "SUPER_ADMIN_ROLE",
+                    "value": "${SUPER_ADMIN_ROLE}"
                   },                                  
                   {
                     "name": "MONGODB_ADMIN_PASSWORD",
@@ -428,7 +308,7 @@
               ],
               "from": {
                 "kind": "ImageStreamTag",
-                "name": "${NAME}frontend:dev"
+                "name": "${NAME}frontend:latest"
               }
             }
           },
@@ -773,13 +653,7 @@
       "displayName": "Context Directory Frontend",
       "description": "Set this to the relative path to your project if it is not in the root of your repository.",
       "value": "client"
-    },
-    {
-      "name": "CONTEXT_DIR_JENKINS",
-      "displayName": "Context Directory Jenkins",
-      "description": "Set this to the relative path to your project if it is not in the root of your repository.",
-      "value": "openshift/pipeline"
-    },
+    },    
     {
       "name": "GIT_USER",
       "displayName": "Git User",
@@ -854,29 +728,17 @@
       "displayName": "Custom NPM Mirror URL",
       "description": "The custom NPM mirror URL",
       "value": ""
-    },    
-    {
-      "name": "CLIENT_PORT",
-      "displayName": "Frontend PORT URL",
-      "description": "Frontend PORT URL.",
-      "value": "80"
-    }, 
+    },        
     {
       "name": "CLIENT_HOST",
       "displayName": "Frontend HOST URL",
-      "description": "Frontend HOST URL.",
+      "description": "Frontend HOST URL. <app name frontend>.<project>.<domain>",
       "value": "buildingblocksfrontend-dev.te-apps.paas.red.uy"
-    }, 
-    {
-      "name": "PORT",
-      "displayName": "Backend PORT URL",
-      "description": "Backend PORT URL.",
-      "value": "80"
-    }, 
+    },      
     {
       "name": "HOST",
       "displayName": "Backend  HOST URL",
-      "description": "Backend  HOST URL.",
+      "description": "Backend  HOST URL. <app name backend>.<project>.<domain>",
       "value": "buildingblocks-dev.te-apps.paas.red.uy"
     },           
     {
@@ -894,14 +756,14 @@
     {
       "name": "REACT_APP_HOST",
       "displayName": "api url",
-      "description": "frontend variable used to access api url",
+      "description": "frontend variable used to access api url. <app name backend>.<project>.<domain>",
       "value": "buildingblocks-dev.te-apps.paas.red.uy"
     },
     {
       "name": "SUPER_ADMIN_USERNAME",
       "displayName": "super admin username ",
       "description": "super admin username, used to create the initial user ",
-      "value": "superusuario"
+      "value": "superAdmin"
     },
     {
       "name": "SUPER_ADMIN_NAME",
@@ -913,7 +775,7 @@
       "name": "SUPER_ADMIN_EMAIL",
       "displayName": "super admin email",
       "description": "super admin email, used to create the initial user ",
-      "value": "user@agesic.com.uy"
+      "value": "superadmin@gub.uy"
     },
     {
       "name": "SUPER_ADMIN_PASSWORD",
