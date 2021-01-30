@@ -5,13 +5,13 @@
     "name": "ci-cd",
     "annotations": {
       "openshift.io/display-name": "Building Blocks CI/CD",
-      "description": "An example Node.js application to frontend and a Node.js application with a MongoDB database. For more information about using this template, including OpenShift considerations, see https://github.com/sclorg/nodejs-ex/blob/master/README.md.",
+      "description": "Este template define todas las imágenes a utilizar en ambiente cicd en el proyecto BuildingBlocks. Cualquier duda de como usar este template, ver https://github.com/AGESIC-UY/control-versiones/blob/main/openshift/README.MD.",
       "tags": "jenkins, ci/cd",
       "iconClass": "icon-nodejs",
-      "openshift.io/long-description": "This template defines resources needed to develop a NodeJS application, including a build configuration, application deployment configuration, and database deployment configuration.",
+      "openshift.io/long-description": "Este template define todas las imágenes a utilizar en ambiente cicd en el proyecto BuildingBlocks. Cualquier duda de como usar este template, ver https://github.com/AGESIC-UY/control-versiones/blob/main/openshift/README.MD.",
       "openshift.io/provider-display-name": "Kreitech ",
-      "openshift.io/documentation-url": "https://github.com/sclorg/nodejs-ex",
-      "openshift.io/support-url": "https://access.redhat.com",
+      "openshift.io/documentation-url": "https://github.com/AGESIC-UY/control-versiones",
+      "openshift.io/support-url": "https://github.com/AGESIC-UY/control-versiones",
       "template.openshift.io/bindable": "false"
     }
   },
@@ -27,9 +27,8 @@
       "metadata": {
         "name": "${NAME}-git"
       },
-      "stringData": {
-        "username": "${GIT_USER}",
-        "password": "${GIT_PASSWORD}"       
+      "data": {
+        "ssh-privatekey":"b3BlbnNzaC1rZXktdjEAAAAACmFlczI1Ni1jdHIAAAAGYmNyeXB0AAAAGAAAABBUXAI1OwFW7HZBtbHwu7Z3AAAAEAAAAAEAAAEXAAAAB3NzaC1yc2EAAAADAQABAAABAQC7sIhdtsLA+v/XK/PqinrLAZsD2O21vAP/9eQpy0P8ovGgkrIfTwBKqo+V6CGr4YRfrXOehuJbuqBaFOv5ghv3kFHcfJgOPwTUF8wnCyGbv3gGNQWdB5aUD9Wn4HXDCUNms6pKVPq4v6b30ibOeb5lNXxtHfNmfum8mf0xY0wCEUYnkQQ/3YyaRL3bJz1MGFtu3Gm1UU6d+dGu3tHtn0S0nHAH+FAekehiloqOCLLtOaBv4R96VGStCvO6tn2wK1IlCpTr4rg2S4H4hkEXH2ARW5mABueNOf50Tewwvwfa/S0cm8taDsPFouHttdw1BzQaMA/X77TiY9Q3/JDuLFL7AAAD0O8S7scYqZMt1IMD50d+QtX1QsoaAp+9THNQVNv+IiXuf/k8uMfhHh1nJWb6o3AgBoJwbbCtptFbVWCy8HGyz2cMtxqjxNYlXsR6FFl+gNuMmroQloBgWVoEcNtpJtTOh0TIKR+6ncUAoe1xBWINL+4l8kwcQfrWk4iRFbVPqkiJ/Yog/4M9OXWQYtRbZ1A8BSTSO07K7/T1OsBbpx6OUOzOX2EGQctz/O5K1LVbItqleNv5Wpo2TZqSDYP5nVH4pH5Iin9AGfgPu6lUb4yMRNA+eyT/jaCR8z2j2/caOqxNiB5QzT4SA9GjpM0nelOlUdgHdrigRB0zwl8REllAB9YPIO0Iw7kcRpv4ccRLi8yjKQ2wbz34CjnQApX0aCIQ18PYn5k++l9Jp25u8jFODSLjCtl93qRYtknrYDgsGj4PhaBMEkrzZPrypAzXKNS7jdpPw7EpBKUXsSAwrU8MFn5kaByx4YT819sEcErt1S0sEN+NN0Ocq+r3gfkaQjfKyOqcnsyvrcCL+G3yC2EXtmR+J0i4PLmxrLK7NA6lJQHdPaa71e3TguxyHqmTpodF3zIADz79xQ+fygdWtv+kP/eSmUe+NUWXrwvqQ0jvAbuTNJeeY/ir/HNsh1ilYB1BIoBqzbsa5YeBEWPX90e7Tp5dh0+2AHz3DxW1nhJwVlwXv2OKOjchp23yutAHLrJidb4Y0j/kCFo2ouE1GeM80PQ8sAA4rTJcq09kUqcvMmvYD802id+iwfMyadL2WmZPHmB2SNeQVOJG/WBuNqZZeka5NyiYZjvxiPwJO9fkZEVTsxgCkg0yexMQRGV8AFaQBziDhXZLE/CZY920DFtrmw/GrU/oChJijvEL0kxp6Vz7v2u2X4kX/AnJx9dgA+u5BdGxVhbquGoY4J32q6xIuFwMZeFTt/W6snlRWdVz0FwDiqmhjC58zXGZtVSbJg/FEUuq0jYEONK6j1ZhyQLEFIc7tDLg89B2GCf7leoV6pvcedWUUylW8Ng0vk50PBw3WNSpp4HZ88VcdJmpvSXhp8xaOp6383+HzBzHcDuRTEG+rB+xfIY+TL6o3by4s/Z45RWKok2LqzJ2y5U2cCUdFym56NVnEEydvSxdsXJfuFvZSLuJniWin+gpLpv15fXhzEIx6PZJ3m+/yqmyYn+S8//c3ZmYgB2frWoHSkg4pdXlCBZapD//RxYigkqcYXB4uRuBpw7tFzl03L8zaOQYTrtTQ4tGUuRIy7VT0S6W3Z4xxOE1svr5usastsQHsX4VWZGeXoC7xGDXf6i/oG+2Zmg="      
       }
     },              
     {
@@ -67,15 +66,7 @@
             {
               "name": "NAMEfrontend",
               "value": "${NAME}frontend"
-            },  
-            {
-              "name": "GIT_USER",
-              "value": "${GIT_USER}"
-            },
-            {
-              "name": "GIT_PASSWORD",
-              "value": "${GIT_PASSWORD}"
-            },          
+            },                       
             {
               "name": "STAGE",
               "value": "${STAGE}"
@@ -139,15 +130,7 @@
             {
               "name": "NAMEfrontend",
               "value": "${NAME}frontend"
-            },  
-            {
-              "name": "GIT_USER",
-              "value": "${GIT_USER}"
-            },
-            {
-              "name": "GIT_PASSWORD",
-              "value": "${GIT_PASSWORD}"
-            },          
+            },                        
             {
               "name": "STAGE",
               "value": "${STAGE_PROD}"
@@ -248,18 +231,6 @@
       "displayName": "Context Directory Jenkins",
       "description": "Set this to the relative path to your project if it is not in the root of your repository.",
       "value": "openshift/pipeline"
-    },
-    {
-      "name": "GIT_USER",
-      "displayName": "Git User",
-      "description": "Set this to user git for your repository.",
-      "value": ""
-    },
-    {
-      "name": "GIT_PASSWORD",
-      "displayName": "Git password",
-      "description": "Set this to password git for your repository.",
-      "value": ""
     },
     {
       "name": "APPLICATION_DOMAIN",

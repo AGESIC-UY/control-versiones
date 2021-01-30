@@ -242,6 +242,12 @@
             "name": "${NAME}frontend:dev"
           }
         },
+        "resources":{
+          "limits":{
+            "cpu":2,
+            "memory": "2Gi"
+          }
+        },
         "triggers": [          
           {
             "type": "GitHub",

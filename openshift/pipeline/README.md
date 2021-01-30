@@ -1,5 +1,9 @@
-This directory contains a Jenkinsfile which can be used to build
-nodejs-ex using an OpenShift build pipeline.
+En este directorio se encuentra el archivo Jenkinsfile que van a ser utilizado por el template ci-cd.json dentro de templates/
+
+En dicho archivo se manejan los Piplelines definidos en ci-cd.
+
+En el caso que se ejecute el pipleline de desarrollo
+
 
 To do this, run:
 

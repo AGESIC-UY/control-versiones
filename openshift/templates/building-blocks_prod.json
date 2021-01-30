@@ -5,10 +5,10 @@
     "name": "tprod",
     "annotations": {
       "openshift.io/display-name": "Building Blocks Production",
-      "description": "An example Node.js application to frontend and a Node.js application with a MongoDB database. For more information about using this template, including OpenShift considerations, see https://github.com/sclorg/nodejs-ex/blob/master/README.md.",
+      "description": "Este template define todas las imágenes a utilizar en ambiente producción en el proyecto BuildingBlocks, ver https://github.com/AGESIC-UY/control-versiones/blob/main/openshift/README.MD.",
       "tags": "quickstart,nodejs,hidden",
       "iconClass": "icon-nodejs",
-      "openshift.io/long-description": "This template defines resources needed to develop a NodeJS application, including a build configuration, application deployment configuration, and database deployment configuration.",
+      "openshift.io/long-description": "Este template define todas las imágenes a utilizar en ambiente producción en el proyecto BuildingBlocks",
       "openshift.io/provider-display-name": "AGESIC",
       "openshift.io/documentation-url": "https://github.com/AGESIC-UY/control-versiones",
       "openshift.io/support-url": "https://github.com/AGESIC-UY/control-versiones",
@@ -733,13 +733,13 @@
       "name": "CLIENT_HOST",
       "displayName": "Frontend HOST URL",
       "description": "Frontend HOST URL. <app name frontend>.<project>.<domain>",
-      "value": "buildingblocksfrontend-dev.te-apps.paas.red.uy"
+      "value": "buildingblocksfrontend-prod.te-apps.paas.red.uy"
     },      
     {
       "name": "HOST",
       "displayName": "Backend  HOST URL",
       "description": "Backend  HOST URL. <app name backend>.<project>.<domain>",
-      "value": "buildingblocks-dev.te-apps.paas.red.uy"
+      "value": "buildingblocks-prod.te-apps.paas.red.uy"
     },           
     {
       "name": "EMAIL_ADDRESS",
@@ -757,7 +757,7 @@
       "name": "REACT_APP_HOST",
       "displayName": "api url",
       "description": "frontend variable used to access api url. <app name backend>.<project>.<domain>",
-      "value": "buildingblocks-dev.te-apps.paas.red.uy"
+      "value": "buildingblocks-prod.te-apps.paas.red.uy"
     },
     {
       "name": "SUPER_ADMIN_USERNAME",
