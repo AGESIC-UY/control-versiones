@@ -1,23 +1,15 @@
 try {
     timeout(time: 30, unit: 'MINUTES') {
     def appName=env.NAME
-    def appNamefrontend = env.NAMEfrontend
-    def folder = ""
-    def deployTemplate = ""
-    def git_user = env.GIT_USER
-    def git_password = env.GIT_PASSWORD
+    def appNamefrontend = env.NAMEfrontend    
     def stages = ""
     def project=""   
     def projectprod = ""
-    def verbose="false"
     def routeHost = ""
     def firsttimeb = false;
     def firsttimef = false;
 
-    node {
-        folder = sh "pwd"
-        echo "folder ---- ${folder}"
-        deployTemplate = "${folder}/building-blocks_prod.json"
+    node {       
         project = env.PROJECT_NAME
         projectprod = env.PROJECT_NAME_PROD
         stages = env.STAGE
@@ -98,9 +90,7 @@ try {
                   if (!firsttimef){                 
                     sh "oc rollout latest dc/${appNamefrontend} -n ${projectprod} "     
                   }                              
-                }
-              
-                             
+                }              
             }
           }
         }
