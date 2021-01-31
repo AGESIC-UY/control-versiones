@@ -27,8 +27,9 @@
       "metadata": {
         "name": "${NAME}-git"
       },
-      "data": {
-        "ssh-privatekey":"b3BlbnNzaC1rZXktdjEAAAAACmFlczI1Ni1jdHIAAAAGYmNyeXB0AAAAGAAAABBUXAI1OwFW7HZBtbHwu7Z3AAAAEAAAAAEAAAEXAAAAB3NzaC1yc2EAAAADAQABAAABAQC7sIhdtsLA+v/XK/PqinrLAZsD2O21vAP/9eQpy0P8ovGgkrIfTwBKqo+V6CGr4YRfrXOehuJbuqBaFOv5ghv3kFHcfJgOPwTUF8wnCyGbv3gGNQWdB5aUD9Wn4HXDCUNms6pKVPq4v6b30ibOeb5lNXxtHfNmfum8mf0xY0wCEUYnkQQ/3YyaRL3bJz1MGFtu3Gm1UU6d+dGu3tHtn0S0nHAH+FAekehiloqOCLLtOaBv4R96VGStCvO6tn2wK1IlCpTr4rg2S4H4hkEXH2ARW5mABueNOf50Tewwvwfa/S0cm8taDsPFouHttdw1BzQaMA/X77TiY9Q3/JDuLFL7AAAD0O8S7scYqZMt1IMD50d+QtX1QsoaAp+9THNQVNv+IiXuf/k8uMfhHh1nJWb6o3AgBoJwbbCtptFbVWCy8HGyz2cMtxqjxNYlXsR6FFl+gNuMmroQloBgWVoEcNtpJtTOh0TIKR+6ncUAoe1xBWINL+4l8kwcQfrWk4iRFbVPqkiJ/Yog/4M9OXWQYtRbZ1A8BSTSO07K7/T1OsBbpx6OUOzOX2EGQctz/O5K1LVbItqleNv5Wpo2TZqSDYP5nVH4pH5Iin9AGfgPu6lUb4yMRNA+eyT/jaCR8z2j2/caOqxNiB5QzT4SA9GjpM0nelOlUdgHdrigRB0zwl8REllAB9YPIO0Iw7kcRpv4ccRLi8yjKQ2wbz34CjnQApX0aCIQ18PYn5k++l9Jp25u8jFODSLjCtl93qRYtknrYDgsGj4PhaBMEkrzZPrypAzXKNS7jdpPw7EpBKUXsSAwrU8MFn5kaByx4YT819sEcErt1S0sEN+NN0Ocq+r3gfkaQjfKyOqcnsyvrcCL+G3yC2EXtmR+J0i4PLmxrLK7NA6lJQHdPaa71e3TguxyHqmTpodF3zIADz79xQ+fygdWtv+kP/eSmUe+NUWXrwvqQ0jvAbuTNJeeY/ir/HNsh1ilYB1BIoBqzbsa5YeBEWPX90e7Tp5dh0+2AHz3DxW1nhJwVlwXv2OKOjchp23yutAHLrJidb4Y0j/kCFo2ouE1GeM80PQ8sAA4rTJcq09kUqcvMmvYD802id+iwfMyadL2WmZPHmB2SNeQVOJG/WBuNqZZeka5NyiYZjvxiPwJO9fkZEVTsxgCkg0yexMQRGV8AFaQBziDhXZLE/CZY920DFtrmw/GrU/oChJijvEL0kxp6Vz7v2u2X4kX/AnJx9dgA+u5BdGxVhbquGoY4J32q6xIuFwMZeFTt/W6snlRWdVz0FwDiqmhjC58zXGZtVSbJg/FEUuq0jYEONK6j1ZhyQLEFIc7tDLg89B2GCf7leoV6pvcedWUUylW8Ng0vk50PBw3WNSpp4HZ88VcdJmpvSXhp8xaOp6383+HzBzHcDuRTEG+rB+xfIY+TL6o3by4s/Z45RWKok2LqzJ2y5U2cCUdFym56NVnEEydvSxdsXJfuFvZSLuJniWin+gpLpv15fXhzEIx6PZJ3m+/yqmyYn+S8//c3ZmYgB2frWoHSkg4pdXlCBZapD//RxYigkqcYXB4uRuBpw7tFzl03L8zaOQYTrtTQ4tGUuRIy7VT0S6W3Z4xxOE1svr5usastsQHsX4VWZGeXoC7xGDXf6i/oG+2Zmg="      
+      "type": "kubernetes.io/ssh-auth",
+      "data":{
+        "ssh-privatekey": "LS0tLS1CRUdJTiBPUEVOU1NIIFBSSVZBVEUgS0VZLS0tLS0KYjNCbGJuTnphQzFyWlhrdGRqRUFBQUFBQkc1dmJtVUFBQUFFYm05dVpRQUFBQUFBQUFBQkFBQUJGd0FBQUFkemMyZ3RjbgpOaEFBQUFBd0VBQVFBQUFRRUF4K3BJMmlPVGhFb1RHdjlPSzR0NWEzdTJ4R1hQK1JjY2c1aVZoUExRQk8yZGM4SExhSWJXCmhzb1hsamZNSTNQTzRacTR2NVBOWVJRQnVaR01NTnAwK2F1RmFWenYxSmxaTm9sK3ByWnExL1p4aFBYaDZSak5UaTdad0YKZGlEVVJHTDc4RDVwQ1lnL1lWL00vMW53eFVJOTNQK3BrYU9RTEZIeVIwNTNCc09saDU2T2MyTWFkdjRCeTVFa0s5dmdKNQpuT0VSdHlZeWlGQmZ5TlNOM242VGFwYnc0S1R4cEVxUVBaQlNybFBZWEJ1ZmF1Zk5CSVJUNGcvbEN4M3ZRM0tOamh5OG8vClZtcERNTTFhZUdRU3JpQ2NtZGVRSzR3RGlDVHJaOUhzQVFWcWoxUmJLZmI4QXRvb1k4a1RYRmhjRFZJblZtNzZYQ05zNFoKaFhIVzhmcWpsd0FBQStEZ2xVWkM0SlZHUWdBQUFBZHpjMmd0Y25OaEFBQUJBUURINmtqYUk1T0VTaE1hLzA0cmkzbHJlNwpiRVpjLzVGeHlEbUpXRTh0QUU3WjF6d2N0b2h0YUd5aGVXTjh3amM4N2htcmkvazgxaEZBRzVrWXd3Mm5UNXE0VnBYTy9VCm1WazJpWDZtdG1yWDluR0U5ZUhwR00xT0x0bkFWMklOUkVZdnZ3UG1rSmlEOWhYOHovV2ZERlFqM2MvNm1SbzVBc1VmSkgKVG5jR3c2V0hubzV6WXhwMi9nSExrU1FyMitBbm1jNFJHM0pqS0lVRi9JMUkzZWZwTnFsdkRncFBHa1NwQTlrRkt1VTloYwpHNTlxNTgwRWhGUGlEK1VMSGU5RGNvMk9ITHlqOVdha013elZwNFpCS3VJSnlaMTVBcmpBT0lKT3RuMGV3QkJXcVBWRnNwCjl2d0MyaWhqeVJOY1dGd05VaWRXYnZwY0kyemhtRmNkYngrcU9YQUFBQUF3RUFBUUFBQVFBSTJLRW9wZkpkSkRuOE05ZnQKclZwT0cwZFhJWG8yZDROWGYyVCtZUkE3WjVoVUN2dEpRTTQxWUxQeWZiMld4QVVmam8wbVRSQUZmN0VqMlFEdkdIdWNvSwo1aW55NHRwaXVBY2swY2EyNEc2R3pWaVZ2WnlMTXRCbjIwT1NtcGxKL1dkUWxqSm5yWlBBWjFEVzY4L3ZxcUs2S01ZRUg4Cnk5YVZMalBPR2Zkd0RXNHlIYWtLTXBOMFMvU1o2aGxRWDdvMWErbFBOcnJPWmNPeFJScTRnNGl1bk5rUCtPQi9oSk8wTHAKM1YxaDZBTnh6K2xsL0RIWXg0a1BXZmZxRXZsWWp6UUZCRFYvUFdPSjQzakFFbzE5Q0x4czQwa0gra1B2SmpKUWdZamJHdwpsTXU2b0ovVFJsTXZHSlBHaSsyT3JxRitzWHlBQlRGYmg2K2RQaU9vN1Q1QkFBQUFnRExqRTd2TDhOV2ZkdEFYaFMrRjlkCjZ3cFBuME9jbDN3Vy9zbm5XREFEU1M5dC8renZsU3l0cmNDSk9UYzJkZWlGaTdsUFFsMlJ4SWhPbG1FWFFCczRNRDNCOUsKeXNhR0FjMVBwOVc4MENaOWFsWWhaZnZxQmVpMXpuRWNoaWdaeStxZWN5NkRkTTFzU1NwNE53cmZZZlVzTmNRTjVHMkJhWApGUHhyOEVadlpXQUFBQWdRRGk4cWVPNzBKa2Z3VVdYYkw1UmNZamlheCsvM1lXdmJncFBvU3ZIYmJ0WWluYlR5UDB0ditQClh5ZHc5eTlITzViLzhNOFV2QStSeHdrcWhvL2MvSkNTa29jUjhZUWg4dCtwTFVDWUFTdlpyd1hHK0FIV1JrSTNOMEZQNTkKcjFOYUNHTXZXb2djN2F1K25vMGpGTENJejE3dVlhbm5QYk4xb2pYNHJDVHhCeXJ3QUFBSUVBNFlHOHVmeURubDZzTm4yWAptcFhOOEtJR2JiZ0pubGNVVWlybldqSkh1RFJ0MGJNN0NERCtjdHFzZjkyaW1GWU1HNTZGbnhUSmlpRG5HKzhyZnRaYkRECmNseHA5YkdGemsxRWlEMHFJU3J3NHk0L283ZTAzeTRna0lJbnM5THc0Wld2OUpTSUZab0Jya0cxT3pRV2kwdlMvRCsxTFAKbmpIYXlrZi90OXBGdDVrQUFBQWtiM0JsYm5Ob2FXWjBMWE52ZFhKalpTMWlkV2xzWkdWeUwzSmxjRzlBWjJsMGFIVmlBUQpJREJBVUdCdz09Ci0tLS0tRU5EIE9QRU5TU0ggUFJJVkFURSBLRVktLS0tLQo="
       }
     },              
     {
@@ -173,13 +174,6 @@
       "value": "buildingblocks"
     },
     {
-      "name": "NAMESPACE",
-      "displayName": "Namespace",
-      "description": "The OpenShift Namespace where the ImageStream resides.",
-      "required": true,
-      "value": "openshift"
-    },
-    {
       "name": "STAGE",
       "displayName": "Stage Staging",
       "description": "staging  (indica el tipo de pipleline a realizar)",
@@ -219,7 +213,7 @@
       "displayName": "Git Repository URL",
       "description": "The URL of the repository with your application source code.",
       "required": true,
-      "value": "https://github.com/AGESIC-UY/control-versiones.git"
+      "value": "git@github.com:AGESIC-UY/control-versiones.git"
     },
     {
       "name": "SOURCE_REPOSITORY_REF",
@@ -230,7 +224,7 @@
       "name": "CONTEXT_DIR_JENKINS",
       "displayName": "Context Directory Jenkins",
       "description": "Set this to the relative path to your project if it is not in the root of your repository.",
-      "value": "openshift/pipeline"
+      "value": "openshift"
     },
     {
       "name": "APPLICATION_DOMAIN",

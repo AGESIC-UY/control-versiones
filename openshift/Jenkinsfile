@@ -55,7 +55,7 @@ try {
                   sh "oc tag ${appNamefrontend}:dev ${appNamefrontend}:prod -n ${project}" 
                 }      
 
-                stage("Pull Backend Build Image & Deploy  ") {
+                stage("Pull Backend Build Image & Deploy") {
                   echo "tagging  ${appName} in ${projectprod}"  
                   try{        
                     sh "oc tag  -d  ${appName}:latest -n ${projectprod}"                                                                  
@@ -67,7 +67,7 @@ try {
                   }
                 }
                
-                stage("Pull Frontend Build Image  ") {
+                stage("Pull Frontend Build Image") {
                   echo "tagging  ${appNamefrontend}"    
                   try{ 
                   sh "oc tag  -d  ${appNamefrontend}:latest -n ${projectprod}"    
@@ -78,14 +78,14 @@ try {
                   sh "oc project ${projectprod} & oc tag  ${project}/${appNamefrontend}:prod ${appNamefrontend}:latest -n ${projectprod}"                                   
                  
                 }
-                stage("Deploy Frontend  ") {
+                stage("Deploy Backend") {
                   echo "tagging  ${appName}"  
                   if (!firsttimeb){                
                     sh "oc rollout latest dc/${appName} -n ${projectprod} "  
                   }                                 
                 }
 
-                stage("Deploy Frontend  ") {
+                stage("Deploy Frontend") {
                   echo "tagging  ${appNamefrontend}" 
                   if (!firsttimef){                 
                     sh "oc rollout latest dc/${appNamefrontend} -n ${projectprod} "     
