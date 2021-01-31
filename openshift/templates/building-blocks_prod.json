@@ -275,6 +275,7 @@
                 },
                 "resources": {
                   "limits": {
+                    "cpu":"1",
                     "memory": "${MEMORY_LIMIT}"
                   }
                 }
@@ -298,6 +299,12 @@
         "strategy": {
           "type": "Recreate"
         },
+        "resources": {
+          "limits": {
+            "cpu": "1",
+            "memory": "1Gi"
+          }          
+        }, 
         "triggers": [
           {
             "type": "ImageChange",
@@ -400,6 +407,7 @@
                 },
                 "resources": {
                   "limits": {
+                    "cpu":"1",
                     "memory": "1Gi"
                   }
                 }
