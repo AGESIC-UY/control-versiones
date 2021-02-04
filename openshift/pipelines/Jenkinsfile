@@ -1,0 +1,112 @@
+try {
+    timeout(time: 30, unit: 'MINUTES') {
+    def appName=env.NAME
+    def appNamefrontend = env.NAMEfrontend    
+    def stages = ""
+    def project=""   
+    def projectprod = ""
+    def routeHost = ""
+    def firsttimeb = false;
+    def firsttimef = false;
+ 
+    node {       
+        project = env.PROJECT_NAME
+        projectprod = env.PROJECT_NAME_PROD
+        stages = env.STAGE
+        echo "${stages}"
+        echo "-----"
+        if (stages == 'staging'){
+          stage("Initialize") {
+            node {
+              sh "oc get route ${appName} -n ${project} -o jsonpath='{ .spec.host }' --loglevel=4 > routehost"
+              routeHost = readFile('routehost').trim()
+              echo " ${routeHost}"
+              sh "oc get route ${appNamefrontend} -n ${project} -o jsonpath='{ .spec.host }' --loglevel=4 > routehost"
+              routeHost = readFile('routehost').trim()                    
+              echo " ${routeHost}"
+              echo "Finalización de Init"
+            }
+          }
+          openshift.withCluster() {
+            openshift.withProject() {
+                stage("Build & Deploy Backend") {
+                  echo "building  ${appName}"
+                  selectProject(project)
+                  sh "oc start-build ${appName} -n ${project}" 
+                  
+                }
+                stage("Build & Deploy Frontend") {              
+                  echo "building  ${appNamefrontend}"
+                  selectProject(project)
+                  sh "oc start-build ${appNamefrontend} -n ${project}"                             
+                }                   
+            }
+          }          
+                          
+        } 
+        if (stages == 'production'){
+            openshift.withCluster() {
+            openshift.withProject() {
+
+                stage("Initialize") {
+                  echo "tagging  ${appName} in ${project}"
+                  sh "oc tag ${appName}:dev ${appName}:prod -n ${project} " 
+                  echo "tagging  ${appNamefrontend} in ${project}"
+                  sh "oc tag ${appNamefrontend}:dev ${appNamefrontend}:prod -n ${project}" 
+                }      
+
+                stage("Pull Backend Build Image & Deploy") {
+                  echo "tagging  ${appName} in ${projectprod}"  
+                  try{        
+                    sh "oc tag  -d  ${appName}:latest -n ${projectprod}"                                                                  
+                  }catch(err2){
+                    echo "not exist tag ${appName}in ${projectprod}"
+                    firsttimeb = true;
+                  }
+                  sh "oc project ${projectprod} & oc tag  ${project}/${appName}:prod ${appName}:latest -n ${projectprod}"
+                  }
+                }
+               
+                stage("Pull Frontend Build Image") {
+                  echo "tagging  ${appNamefrontend}"    
+                  try{ 
+                  sh "oc tag  -d  ${appNamefrontend}:latest -n ${projectprod}"    
+                   }catch(err2){
+                    echo "not exist tag ${appNamefrontend}"
+                    firsttimef = true;
+                  }       
+                  sh "oc project ${projectprod} & oc tag  ${project}/${appNamefrontend}:prod ${appNamefrontend}:latest -n ${projectprod}"                                   
+                 
+                }
+                stage("Deploy Backend") {
+                  echo "tagging  ${appName}"  
+                  if (!firsttimeb){                
+                    sh "oc rollout latest dc/${appName} -n ${projectprod} "  
+                  }                                 
+                }
+
+                stage("Deploy Frontend") {
+                  echo "tagging  ${appNamefrontend}" 
+                  if (!firsttimef){                 
+                    sh "oc rollout latest dc/${appNamefrontend} -n ${projectprod} "     
+                  }                              
+                }              
+            }
+          }
+        }
+      }
+    
+} catch (err) {
+    echo "in catch block"
+    echo "Caught: ${err}"
+    currentBuild.result = 'FAILURE'
+    throw err
+}  
+
+private void selectProject(String project) {
+    sh "oc project ${project}"
+}
+
+
+
+
