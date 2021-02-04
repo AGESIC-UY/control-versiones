@@ -6,6 +6,7 @@
   - [Estructura de carpetas](#estructura-de-carpetas)
   - [Instalación de Ambientes](#instalación-de-ambientes)
   - [CI/CD como funciona](#cicd-como-funciona)
+  - [Tips o Problemas encontrados](#tips-o-problemas-encontrados)
 
 <!-- tocstop -->
 
@@ -78,7 +79,7 @@ Este archivo se utiliza como template para la creación del ambiente de producci
    2) buildingblocks-git - almacena el acceso al git.
 
 ### Instalación de Ambientes
-
+ 
 Una vez creado cada proyecto lo que se hace es importar cada template, procesarlo, luego de eso aparece una serie de variables a completar que se listarán a continuación para explicar el significado de cada una en el sistema.
 
 Los valores que están indicados en el template, están configurados para que funcione con la configuración del servidores establecida. Pero a modo de descripción se indican una descripción de cada variable que hay que completar al momento de precesar el template.
@@ -125,6 +126,29 @@ Son las mismas variables que en Staging, solo que ajustadas al nuevo proyecto en
 ####Variables para indicar en CI-CD
 </br>
 
+{
+      "name": "JENKINS_SERVICE_NAME",
+      "displayName": "Jenkins Service Name",
+      "description": "The name of the OpenShift Service exposed for the Jenkins container.",
+      "value": "jenkins"
+    },
+    {
+      "name": "JNLP_SERVICE_NAME",
+      "displayName": "Jenkins JNLP Service Name",
+      "description": "The name of the service used for master/slave communication.",
+      "value": "jenkins-jnlp"
+    },
+    {
+      "name": "ENABLE_OAUTH",
+      "displayName": "Enable OAuth in Jenkins",
+      "description": "Whether to enable OAuth OpenShift integration. If false, the static account 'admin' will be initialized with the password 'password'.",
+      "value": "true"
+    },
+**Enable OAuth in Jenkins:**
+  
+**Namespace:** Es el Openshift Namespace donde residen las imagenes.
+**Disable memory intensive administrative monitors:** Es para habilitar la posibilidad de que Jenkins update Center esté sincronizado con el manejo de memoria, false el valor por defecto.
+**Jenkins ImageStreamTag:** Es el nombre de la imagen de Jenkins a utilizar
 **Name:** Es el nombre del aplicativo
 **Stage Staging:** Esta variable se utiliza dentro del Jenkinsfile sirve para indicar que se trata del pipeline de staging
 **Stage Production:** Esta variable se utiliza dentro del Jenkinsfile sirve para indicar que se trata del pipeline de producción
@@ -163,4 +187,7 @@ A continuación se describen las etapas que se realizan en cada pipeline
    2. Pull Backend Build Image & Deploy (y Frontend tambien): En ambas etapas, lo que se hace es importar la imagen de staging para usarla en production, utilizando tags.
    3. Deploy Backend ( y Frontend tambien): En esta etapa, se hace el deploy de la imágen en producción.
    
-   
+### Tips o Problemas encontrados
+
+1. No olvidarse de configurar los permisos entre los proyectos, uno de los permisos es el de Jenkins sobre los proyectos bb-staging y bb-production
+2. Otro punto importante, es verificar el tema de los limites de los servidores, tanto la quota del servidor, como los limites de los contenedores (aunque esos ya fueron pre-configurados)

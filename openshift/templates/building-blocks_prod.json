@@ -300,7 +300,7 @@
             "imageChangeParams": {
               "automatic": true,
               "containerNames": [
-                "nodejs-mongodb-example"
+                "nodejs-frontend"
               ],
               "from": {
                 "kind": "ImageStreamTag",
@@ -326,7 +326,7 @@
           "spec": {
             "containers": [
               {
-                "name": "nodejs-mongodb-example",
+                "name": "nodejs-frontend",
                 "image": " ",
                 "ports": [
                   {
@@ -759,8 +759,7 @@
     {
       "name": "SUPER_ADMIN_PASSWORD",
       "displayName": "Super admin password",
-      "description": "super admin password, used to create the initial user ",
-      "value": "Agesic.123"
+      "description": "super admin password, used to create the initial user "
     },
     {
       "name": "SUPER_ADMIN_ROLE",

@@ -20,7 +20,265 @@
     "template": "buildingblocks",
     "app": "buildingblocks"
   },
-  "objects": [                       
+  "objects": [     
+    {
+      "kind": "Route",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${JENKINS_SERVICE_NAME}",
+        "annotations": {
+          "template.openshift.io/expose-uri": "http://{.spec.host}{.spec.path}",
+          "haproxy.router.openshift.io/timeout": "4m"
+        }
+      },
+      "spec": {
+        "to": {
+          "kind": "Service",
+          "name": "${JENKINS_SERVICE_NAME}"
+        },
+        "tls": {
+          "termination": "edge",
+          "insecureEdgeTerminationPolicy": "Redirect"
+        }
+      }
+    },
+    {
+      "kind": "ConfigMap",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${JENKINS_SERVICE_NAME}-trusted-ca-bundle",
+        "labels": {
+          "config.openshift.io/inject-trusted-cabundle": "true"
+        }
+      }
+    },
+    {
+      "kind": "DeploymentConfig",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${JENKINS_SERVICE_NAME}",
+        "annotations": {
+          "template.alpha.openshift.io/wait-for-ready": "true"
+        }
+      },
+      "spec": {
+        "strategy": {
+          "type": "Recreate"
+        },
+        "triggers": [
+          {
+            "type": "ImageChange",
+            "imageChangeParams": {
+              "automatic": true,
+              "containerNames": [
+                "jenkins"
+              ],
+              "from": {
+                "kind": "ImageStreamTag",
+                "name": "${JENKINS_IMAGE_STREAM_TAG}",
+                "namespace": "${NAMESPACE}"
+              },
+              "lastTriggeredImage": ""
+            }
+          },
+          {
+            "type": "ConfigChange"
+          }
+        ],
+        "replicas": 1,
+        "selector": {
+          "name": "${JENKINS_SERVICE_NAME}"
+        },
+        "template": {
+          "metadata": {
+            "labels": {
+              "name": "${JENKINS_SERVICE_NAME}"
+            }
+          },
+          "spec": {
+            "serviceAccountName": "${JENKINS_SERVICE_NAME}",
+            "containers": [
+              {
+                "name": "jenkins",
+                "image": " ",
+                "readinessProbe": {
+                  "timeoutSeconds": 240,
+                  "initialDelaySeconds": 3,
+                  "httpGet": {
+                    "path": "/login",
+                    "port": 8080
+                  }
+                },
+                "livenessProbe": {
+                    "timeoutSeconds": 240,
+                    "periodSeconds": 360,
+                    "initialDelaySeconds": 420,
+                    "failureThreshold" : 2,
+                    "httpGet": {
+                        "path": "/login",
+                        "port": 8080
+                    }
+                },
+                "env": [
+                  {
+                    "name": "OPENSHIFT_ENABLE_OAUTH",
+                    "value": "${ENABLE_OAUTH}"
+                  },
+                  {
+                    "name": "OPENSHIFT_ENABLE_REDIRECT_PROMPT",
+                    "value": "true"
+                  },
+                  {
+                    "name": "DISABLE_ADMINISTRATIVE_MONITORS",
+                    "value": "${DISABLE_ADMINISTRATIVE_MONITORS}"
+                  },
+                  {
+                    "name": "KUBERNETES_MASTER",
+                    "value": "https://kubernetes.default:443"
+                  },
+                  {
+                    "name": "KUBERNETES_TRUST_CERTIFICATES",
+                    "value": "true"
+                  },
+                  {
+                    "name": "JENKINS_SERVICE_NAME",
+                    "value": "${JENKINS_SERVICE_NAME}"
+                  },
+                  {
+                    "name": "JNLP_SERVICE_NAME",
+                    "value": "${JNLP_SERVICE_NAME}"
+                  },
+                  {
+                    "name": "JENKINS_UC_INSECURE",
+                    "value": "false"
+                  },
+                  {
+                    "name": "CASC_JENKINS_CONFIG",
+                    "value": "/var/lib/jenkins/proxy.yaml"
+                  }
+                ],
+                "resources": {
+                  "limits": {
+                    "memory": "${MEMORY_LIMIT}"
+                  }
+                },
+                "volumeMounts": [
+                  {
+                    "name": "${JENKINS_SERVICE_NAME}-data",
+                    "mountPath": "/var/lib/jenkins"
+                  },
+                  {
+                    "name": "${JENKINS_SERVICE_NAME}-trusted-ca-bundle",
+                    "mountPath": "/etc/pki/ca-trust/source/anchors"
+                  }
+                ],
+                "terminationMessagePath": "/dev/termination-log",
+                "imagePullPolicy": "IfNotPresent",
+                "capabilities": {},
+                "securityContext": {
+                  "capabilities": {},
+                  "privileged": false
+                }
+              }
+            ],
+            "volumes": [
+              {
+                "name": "${JENKINS_SERVICE_NAME}-data",
+                "emptyDir": {
+                  "medium": ""
+                }
+              },
+              {
+                "name": "${JENKINS_SERVICE_NAME}-trusted-ca-bundle",
+                "configMap": {
+                  "name": "${JENKINS_SERVICE_NAME}-trusted-ca-bundle",
+                  "optional": true
+                }
+              }
+            ],
+            "restartPolicy": "Always",
+            "dnsPolicy": "ClusterFirst"
+          }
+        }
+      }
+    },
+    {
+      "kind": "ServiceAccount",
+        "apiVersion": "v1",
+        "metadata": {
+            "name": "${JENKINS_SERVICE_NAME}",
+            "annotations": {
+		"serviceaccounts.openshift.io/oauth-redirectreference.jenkins": "{\"kind\":\"OAuthRedirectReference\",\"apiVersion\":\"v1\",\"reference\":{\"kind\":\"Route\",\"name\":\"${JENKINS_SERVICE_NAME}\"}}"
+            }
+        }
+    },
+    {
+      "kind": "RoleBinding",
+      "apiVersion": "v1",
+      "metadata": {
+          "name": "${JENKINS_SERVICE_NAME}_edit"
+      },
+      "groupNames": null,
+      "subjects": [
+          {
+              "kind": "ServiceAccount",
+              "name": "${JENKINS_SERVICE_NAME}"
+          }
+      ],
+      "roleRef": {
+          "name": "edit"
+      }
+    },
+    {
+      "kind": "Service",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${JNLP_SERVICE_NAME}"
+      },
+      "spec": {
+        "ports": [
+          {
+            "name": "agent",
+            "protocol": "TCP",
+            "port": 50000,
+            "targetPort": 50000,
+            "nodePort": 0
+          }
+        ],
+        "selector": {
+          "name": "${JENKINS_SERVICE_NAME}"
+        },
+        "type": "ClusterIP",
+        "sessionAffinity": "None"
+      }
+    },
+    {
+       "kind": "Service",
+       "apiVersion": "v1",
+       "metadata": {
+         "name": "${JENKINS_SERVICE_NAME}",
+         "annotations": {
+           "service.alpha.openshift.io/dependencies": "[{\"name\": \"${JNLP_SERVICE_NAME}\", \"namespace\": \"\", \"kind\": \"Service\"}]",
+           "service.openshift.io/infrastructure": "true"
+         }
+       },
+       "spec": {
+         "ports": [
+           {
+             "name": "web",
+             "protocol": "TCP",
+             "port": 80,
+             "targetPort": 8080,
+             "nodePort": 0
+           }
+         ],
+         "selector": {
+           "name": "${JENKINS_SERVICE_NAME}"
+         },
+         "type": "ClusterIP",
+         "sessionAffinity": "None"
+       }
+    },                  
     {
       "kind": "BuildConfig",
       "apiVersion": "v1",
@@ -38,7 +296,9 @@
           "type": "Git",
           "git": {
             "uri": "${SOURCE_REPOSITORY_URL}",
-            "ref": "${SOURCE_REPOSITORY_REF}"
+            "ref": "${SOURCE_REPOSITORY_REF}",
+            "httpProxy": "http://proxy-te.nube.red.uy:3128",
+            "httpsProxy": "https://proxy-te.nube.red.uy:3128"
           },
           "contextDir": "${CONTEXT_DIR_JENKINS}"          
         },
@@ -99,7 +359,9 @@
           "type": "Git",
           "git": {
             "uri": "${SOURCE_REPOSITORY_URL}",
-            "ref": "${SOURCE_REPOSITORY_REF}"
+            "ref": "${SOURCE_REPOSITORY_REF}",
+            "httpProxy": "http://proxy-te.nube.red.uy:3128",
+            "httpsProxy": "https://proxy-te.nube.red.uy:3128"
           },
           "contextDir": "${CONTEXT_DIR_JENKINS}"         
         },
@@ -150,6 +412,48 @@
   ],
   "parameters": [
     {
+      "name": "JENKINS_SERVICE_NAME",
+      "displayName": "Jenkins Service Name",
+      "description": "The name of the OpenShift Service exposed for the Jenkins container.",
+      "value": "jenkins"
+    },
+    {
+      "name": "JNLP_SERVICE_NAME",
+      "displayName": "Jenkins JNLP Service Name",
+      "description": "The name of the service used for master/slave communication.",
+      "value": "jenkins-jnlp"
+    },
+    {
+      "name": "ENABLE_OAUTH",
+      "displayName": "Enable OAuth in Jenkins",
+      "description": "Whether to enable OAuth OpenShift integration. If false, the static account 'admin' will be initialized with the password 'password'.",
+      "value": "true"
+    },
+    {
+      "name": "MEMORY_LIMIT",
+      "displayName": "Memory Limit",
+      "description": "Maximum amount of memory the container can use.",
+      "value": "1Gi"
+    },
+    {
+      "name": "NAMESPACE",
+      "displayName": "Jenkins ImageStream Namespace",
+      "description": "The OpenShift Namespace where the Jenkins ImageStream resides.",
+      "value": "openshift"
+    },
+    {
+      "name": "DISABLE_ADMINISTRATIVE_MONITORS",
+      "displayName": "Disable memory intensive administrative monitors",
+      "description": "Whether to perform memory intensive, possibly slow, synchronization with the Jenkins Update Center on start.  If true, the Jenkins core update monitor and site warnings monitor are disabled.",
+      "value": "false"
+    },
+    {
+      "name": "JENKINS_IMAGE_STREAM_TAG",
+      "displayName": "Jenkins ImageStreamTag",
+      "description": "Name of the ImageStreamTag to be used for the Jenkins image.",
+      "value": "jenkins:2"
+    },    
+    {
       "name": "NAME",
       "displayName": "Name",
       "description": "The name assigned to all of the frontend objects defined in this template.",
@@ -175,39 +479,33 @@
       "displayName": "Nombre del Proyecto",
       "description": "Se indica el nombre del proyecto.",
       "required": true,
-      "value": "dev"
+      "value": "bb-staging"
     },
     {
       "name": "PROJECT_NAME_PROD",
       "displayName": "Nombre del Proyecto Produccion",
       "description": "Se indica el nombre del proyecto produccion.",
       "required": true,
-      "value": "prod"
-    },
-    {
-      "name": "MEMORY_LIMIT",
-      "displayName": "Memory Limit",
-      "description": "Maximum amount of memory the Node.js container can use.",
-      "required": true,
-      "value": "512Mi"
-    },
+      "value": "bb-production"
+    },    
     {
       "name": "SOURCE_REPOSITORY_URL",
       "displayName": "Git Repository URL",
       "description": "The URL of the repository with your application source code.",
       "required": true,
-      "value": "git@github.com:AGESIC-UY/control-versiones.git"
+      "value": "https://github.com/AGESIC-UY/control-versiones.git"
     },
     {
       "name": "SOURCE_REPOSITORY_REF",
       "displayName": "Git Reference",
-      "description": "Set this to a branch name, tag or other ref of your repository if you are not using the default branch."
+      "description": "Set this to a branch name, tag or other ref of your repository if you are not using the default branch.",
+      "value": "oc"
     },   
     {
       "name": "CONTEXT_DIR_JENKINS",
       "displayName": "Context Directory Jenkins",
       "description": "Set this to the relative path to your project if it is not in the root of your repository.",
-      "value": "openshift"
+      "value": "openshift/pipelines"
     },
     {
       "name": "APPLICATION_DOMAIN",
