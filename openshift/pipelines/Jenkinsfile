@@ -80,15 +80,23 @@ try {
                 }
                 stage("Deploy Backend") {
                   echo "tagging  ${appName}"  
-                  if (!firsttimeb){                
-                    sh "oc rollout latest dc/${appName} -n ${projectprod} "  
+                  if (!firsttimeb){         
+                    try{        
+                      sh "oc rollout latest dc/${appName} -n ${projectprod} "  
+                    }catch(err3){
+                      echo "deploy is running ${appName}"
+                    }
                   }                                 
                 }
 
                 stage("Deploy Frontend") {
                   echo "tagging  ${appNamefrontend}" 
-                  if (!firsttimef){                 
-                    sh "oc rollout latest dc/${appNamefrontend} -n ${projectprod} "     
+                  if (!firsttimef){   
+                    try{               
+                    sh "oc rollout latest dc/${appNamefrontend} -n ${projectprod} "  
+                    }catch(err4){
+                      echo "deploy is running ${appNamefrontend}"
+                    }   
                   }                              
                 }              
             }
