@@ -121,6 +121,12 @@
         "strategy": {
           "type": "Recreate"
         },
+	"resources":{
+          "limits":{
+            "cpu": 1,
+            "memory": "1Gi"
+          }
+        },
         "triggers": [
           {
             "type": "ImageChange",
@@ -736,7 +742,7 @@
       "name": "REACT_APP_HOST",
       "displayName": "Api url",
       "description": "frontend variable used to access api url. <app name backend>.<project>.<domain>",
-      "value": "buildingblocks-prod.te-apps.paas.red.uy"
+      "value": "buildingblocks-bb-production.te-apps.paas.red.uy"
     },
     {
       "name": "SUPER_ADMIN_USERNAME",

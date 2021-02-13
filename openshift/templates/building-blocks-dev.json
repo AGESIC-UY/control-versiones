@@ -772,7 +772,7 @@
       "displayName": "Git Repository URL",
       "description": "The URL of the repository with your application source code.",
       "required": true,
-      "value": "git@github.com:AGESIC-UY/control-versiones.git"
+      "value": "https://github.com/AGESIC-UY/control-versiones.git"
     },
     {
       "name": "SOURCE_REPOSITORY_REF",
@@ -858,7 +858,7 @@
       "name": "CLIENT_HOST",
       "displayName": "Frontend HOST URL",
       "description": "Frontend HOST URL. <app name frontend>.<project>.<domain>",
-      "value": "buildingblocksfrontend-dev.te-apps.paas.red.uy"
+      "value": "buildingblocksfrontend-bb-staging.te-apps.paas.red.uy"
     },           
     {
       "name": "EMAIL_ADDRESS",
@@ -876,7 +876,7 @@
       "name": "REACT_APP_HOST",
       "displayName": "Api url",
       "description": "frontend variable used to access api url. <app name backend>.<project>.<domain>",
-      "value": "buildingblocks-dev.te-apps.paas.red.uy"
+      "value": "buildingblocks-bb-staging.te-apps.paas.red.uy"
     },
     {
       "name": "SUPER_ADMIN_USERNAME",
