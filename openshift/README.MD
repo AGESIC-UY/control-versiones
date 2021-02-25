@@ -125,26 +125,6 @@ Son las mismas variables que en Staging, solo que ajustadas al nuevo proyecto en
 
 ####Variables para indicar en CI-CD
 </br>
-
-{
-      "name": "JENKINS_SERVICE_NAME",
-      "displayName": "Jenkins Service Name",
-      "description": "The name of the OpenShift Service exposed for the Jenkins container.",
-      "value": "jenkins"
-    },
-    {
-      "name": "JNLP_SERVICE_NAME",
-      "displayName": "Jenkins JNLP Service Name",
-      "description": "The name of the service used for master/slave communication.",
-      "value": "jenkins-jnlp"
-    },
-    {
-      "name": "ENABLE_OAUTH",
-      "displayName": "Enable OAuth in Jenkins",
-      "description": "Whether to enable OAuth OpenShift integration. If false, the static account 'admin' will be initialized with the password 'password'.",
-      "value": "true"
-    },
-**Enable OAuth in Jenkins:**
   
 **Namespace:** Es el Openshift Namespace donde residen las imagenes.
 **Disable memory intensive administrative monitors:** Es para habilitar la posibilidad de que Jenkins update Center esté sincronizado con el manejo de memoria, false el valor por defecto.
@@ -180,7 +160,7 @@ A continuación se describen las etapas que se realizan en cada pipeline
 
 1. buildingblocksstaging
    1. Initialize: Hace chequeos de ruta, que estén definido.
-   2. Build & Deploy Backend (y Frontend Tambien): Se hace inicial el build del backend y frontend respetivamente (que una vez finalizado, hará el deploy automático)                 
+   2. Build & Deploy Backend (y Frontend Tambien): Se hace inicial el build del backend y frontend respetivamente (que una vez finalizado, hará el deploy automático). Se hace un tag de las imágenes creadas.
 
 2. buildingblocksproduction
    1. Initialize : En esta etapa se hace un tag en staging, sobre la imagen creada en staging.
