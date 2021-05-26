@@ -1,4 +1,18 @@
-# Building-Blocks Documentation
+# Building-Block CONTROL DE VERSIONES 
+
+
+El sistema es de utilidad para el proceso de desarrollo de una aplicación mobile o una ya desarrollada, permite gestionar diferentes aspectos vinculados a la relación entre una versión de una aplicación web o mobile con los servicios de backend que la misma utiliza.
+
+El sistema a través de una API REST retornará la versión de servidor backend correcta para ese cliente, así como su URL base.
+
+El módulo incorpora una funcionalidad que permite notificar al cliente mobile, en caso de que sea necesario “forzar” la actualización a una versión más reciente. La administración del catálogo de versiones que el API REST retorna, podrá hacerse también a través de una API o bien mediante una interfaz web sencilla.
+
+Este módulo permite agilizar el proceso de desarrollo permitiendo la convivencia de múltiples versiones, teniendo control en runtime de la URL del backend que cada versión de la aplicación consume.
+
+El sistema es deplegable en OCP como en Vmware, además dentro del repositorio podrá encontrar una aplicación cliente de ejemplo, para verificar el funcionamiento con el backend de quienes se quieran integrar. El backend cuenta con un frontend de gestión. 
+
+
+# GUIA DE INSTALACION
 
 
 ## Installation
